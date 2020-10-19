@@ -87,7 +87,7 @@ class TargetDetailApproval(LoginRequiredMixin, PermissionRequiredMixin, DetailVi
     permission_required = 'pool.change_pooltarget'
     model = Submission
     context_object_name = 'submission'
-    template_name = 'target_detail_approval.html'
+    template_name = 'moderation/target_detail_approval.html'
 
 @login_required
 def reveal_target(request, tid):
@@ -165,7 +165,7 @@ class PoolTargetQueueListView(LoginRequiredMixin, PermissionRequiredMixin, ListV
     context_object_name = 'submissions'
     queryset = Submission.objects.filter(moderated=False)
     paginate_by = 15
-    template_name = 'approval_queue.html'
+    template_name = 'moderation/approval_queue.html'
 
 class PoolTargetModeratedListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
 
@@ -174,7 +174,7 @@ class PoolTargetModeratedListView(LoginRequiredMixin, PermissionRequiredMixin, L
     context_object_name = 'submissions'
     queryset = Submission.objects.filter(moderated=True)
     paginate_by = 15
-    template_name = 'moderated_submissions.html'
+    template_name = 'moderation/moderated_submissions.html'
     ordering = ['-submission_date']
 
 class ViewedTargetsListView(LoginRequiredMixin, ListView):

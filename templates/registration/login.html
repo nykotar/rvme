@@ -1,0 +1,44 @@
+{% extends "base_generic.html" %}
+{% load static %}
+{% load random_quote %}
+{% block custom_css %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="sidenav">
+         <div class="login-main-text">
+            <h1><a class="text-decoration-none text-dark" href="{% url 'index' %}">RV Me</a></h1><h2> Login</h2><br/>
+            <blockquote class="blockquote">
+               {% autoescape off %}
+                  {% random_quote %}
+               {% endautoescape %}
+            </blockquote>
+         </div>
+      </div>
+      <div class="main">
+         <div class="col-md-6 col-sm-12">
+            <div class="login-form">
+               <form method="POST" action="{% url 'login' %}">
+                  {% csrf_token %}
+                  <div class="form-group">
+                     <label>Username</label>
+                     <input type="text" class="form-control" name="username" autocomplete="username" placeholder="Username" autofocus required>
+                  </div>
+                  <div class="form-group">
+                     <label>Password</label>
+                     <input type="password" class="form-control" name="password" placeholder="Password" required>
+                     <small class="form-text text-muted">Don't have an account? <a class="text-black-50" href="{% url 'signup' %}">Sign up</a></small>
+                  </div>
+                  {% if form.errors %}
+                    <p class="text-danger">Your username and password didn't match. Please try again.</p>
+                  {% endif %}
+                  <button type="submit" class="btn btn-dark">Login</button>
+               </form>
+            </div>
+         </div>
+      </div>
+    </div>
+{% endblock %}
+
+

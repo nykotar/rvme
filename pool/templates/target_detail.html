@@ -1,0 +1,28 @@
+{% extends "base_main.html" %}
+
+{% block content %}
+  {% if not target.revealed %}
+    <div class="container-fluid h-50">
+      <div class="row h-100 justify-content-center align-items-center">
+        <h1 id="tid"><a class="btn btn-outline-dark btn-xlg" href="{% url 'pool:reveal_target' target.target_id %}">{{ target.target_id }}</a></h1>
+      </div>
+    </div>
+  {% else %}
+    <div class="container">
+    <div>
+      <h1 style="display: inline-block">{{ target.target_id }}</h1>
+      {% if target.is_precog %}<span class="badge badge-info" style="vertical-align: top">Precog</span>{% endif %}
+    </div>
+      <br/>
+      <div class="card">
+        <a href="{{ target.pool_target.feedback_img.url }}" target="_blank"><img class="card-img-top img-fluid" src="{{ target.pool_target.feedback_img.url }}" alt="{{ target.description }}"/></a>
+        <div class="card-body">
+          <p class="card-text">{{ target.pool_target.description }}</p>
+        </div>
+        <div class="card-footer text-muted">
+          Category: {{ target.pool_target.category|title }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

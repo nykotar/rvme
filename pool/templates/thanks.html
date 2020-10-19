@@ -1,0 +1,10 @@
+{% extends "base_main.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Thank you for your contribution!</h1>
+    <h3 class="font-weight-light">Your target was sent to analysis.</h3>
+    <br/>
+    <a href="{% url 'pool:index' %}">Back</a>
+</div>
+{% endblock %}

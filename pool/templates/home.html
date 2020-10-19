@@ -1,0 +1,80 @@
+{% extends "base_main.html" %}
+
+{% block content %}
+  <div class="container">
+  <h1>Practice</h1>
+  <br/>
+    <div class="row">
+      <div class="col col-xl-4 col-lg-5 col-md-6 col-sm-6">
+        <form method="POST">
+          <div class="card border-dark">
+            <div class="card-body">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="event" id="event" checked>
+                    <label class="form-check-label" for="event">
+                      Event
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="lifeform" id="lifeform" checked>
+                    <label class="form-check-label" for="lifeform">
+                      Lifeform
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="location" id="location" checked>
+                    <label class="form-check-label" for="location">
+                      Location
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="object" id="object" checked>
+                    <label class="form-check-label" for="object">
+                      Object
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="person" id="person" checked>
+                    <label class="form-check-label" for="person">
+                      Person
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="other" id="other" checked>
+                    <label class="form-check-label" for="other">
+                      Other
+                    </label>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="precognitive" id="precognitive">
+                    <label class="form-check-label text-info" for="precognitive">
+                      Precognitive <i class="bx bx-help-circle" data-toggle="tooltip" data-placement="top" title="The target is selected on reveal."></i>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              {% if form.non_field_errors %}
+                  {% for error in form.non_field_errors %}
+                      <p class="text-danger">{{ error }}</p>
+                  {% endfor %}
+              {% endif %}
+              <br/>
+              <button type="submit" class="btn btn-dark">Get target</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block custom_js%}
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends "base_generic.html" %}
+{% load static %}
+{% block custom_css %}
+  <link rel="stylesheet" href="{% static 'icofont/icofont.min.css' %}">
+  <link rel="stylesheet" href="{% static 'boxicons/css/boxicons.min.css' %}">
+{% endblock %}
+{% block content %}
+<div class="jumbotron">
+  <div class="container">
+    <h1 class="display-4">The collaborative target pool.</h1>
+    <p class="lead">RV Me is a target pool for remote viewers made by the community, for the community.</p>
+    <hr class="my-4">
+    <p class="lead">
+      <a class="btn btn-dark btn-lg" href="{% url 'signup' %}" role="button">Get started</a>
+      <a class="btn btn-outline-dark btn-lg" href="#about" role="button">Learn more</a>
+    </p>
+  </div>
+</div>
+<main>
+  <section class="section">
+    <div class="container">
+      <h2 id="about" class="section-title">About</h2>
+      <div class="row">
+        <div class="col-md-5">
+          <img class="img-fluid" src="{% static 'img/eye.jpg' %}" alt="Eye">
+        </div>
+        <div class="col-md-6">
+          <p>RV.me is bringing remote viewing target practice to the 21st century. Created by the mods of <a class="text-dark" href="https://reddit.com/r/remoteviewing">r/remoteviewing</a>, we are aiming to solve common issues with today's target pools.</p>
+          <ul class="about-bullets">
+            <li><i class="icofont-check-circled"></i> Never get the same target twice</li>
+            <li><i class="icofont-check-circled"></i> No more broken links</li>
+            <li><i class="icofont-check-circled"></i> Additional feedback</li>
+            <li><i class="icofont-check-circled"></i> Endless targets</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section features">
+    <div class="container">
+      <h2 class="section-title">Features</h2>
+      <p class="lead text-center">See what RV Me has to offer</p>
+      <div class="row">
+        <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-2">
+          <div class="icon-box">
+            <div class="icon"><i class="bx bx-list-ul"></i></div>
+            <h4>Categories</h4>
+            <p>Select between six categories of targets to train with</p>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-2">
+          <div class="icon-box">
+            <div class="icon"><i class="bx bxs-share-alt"></i></div>
+            <h4>Collaborative</h4>
+            <p>Enjoy and contribute to a target pool built by the community</p>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-2">
+          <div class="icon-box">
+            <div class="icon"><i class="bx bx-outline"></i></div>
+            <h4>Precog mode</h4>
+            <p>Train your precognition with the precog mode. The target is selected on reveal</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section cta">
+    <div class="container text-center">
+      <h2 class="section-title">Start Practicing</h2>
+      <p class="text-center mb-4">Sign up and begin your journey with RV Me. It's free!</p>
+      <a class="btn btn-outline-light btn-lg" href="{% url 'signup' %}" role="button">Sign up</a>
+    </div>
+  </section>
+</main>
+<footer id="footer">
+  <div class="footer-top">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-6">
+          <h3>RV Me</h3>
+          <p class="lead">The collaborative target pool.</p>
+        </div>
+      </div>
+      <div class="social-links">
+        <a class="social-link" href="https://reddit.com/r/remoteviewing"><i class="bx bxl-reddit"></i></a>
+        <a class="social-link" href="https://discord.gg/QZyqvfy"><i class="bx bxl-discord"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="container footer-bottom clearfix">
+    <div class="contact">
+      contact@rvme.app
+    </div>
+    <div class="credits">
+      Made with <i class="icofont-heart"></i> by nykotar
+    </div>
+  </div>
+</footer>
+{% endblock %}

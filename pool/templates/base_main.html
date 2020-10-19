@@ -1,0 +1,80 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    {% block title %}<title>RV Me - Target Pool</title>{% endblock %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'boxicons/css/boxicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles_generic.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+  </head>
+  <body>
+		
+		<div class="wrapper d-flex align-items-stretch">
+			<nav id="sidebar">
+				<div class="custom-menu">
+					<button type="button" id="sidebarCollapse" class="btn btn-primary">
+	          <i class="fa fa-bars"></i>
+	          <span class="sr-only">Toggle Menu</span>
+	        </button>
+        </div>
+	  		<h1 class="logo"><a class="text-decoration-none text-dark" href="{% url 'pool:index' %}">RV Me</a></h1>
+        <ul class="list-unstyled components mb-5">
+          <li>
+            <a href="{% url 'pool:index' %}">Practice</a>
+          </li>
+          <li>
+            <a href="{% url 'pool:viewed_targets' %}">Viewed Targets</a>
+          </li>
+          <li>
+            <a class="text-info" href="{% url 'pool:contribute' %}">Contribute</a>
+          </li>
+          {% if perms.pool.change_pooltarget %}
+            <li>
+              <a href="{% url 'pool:approval_queue' %}">Approval Queue</a>
+            </li>
+          {% endif %}
+          <li>
+            <a href="/accounts/logout">Log Out</a>
+          </li>
+        </ul>
+
+    	</nav>
+
+        <!-- Page Content  -->
+      <div id="content" class="p-4 p-md-5 pt-5 ml-5">
+        {% block content %}{% endblock %}
+      </div>
+		</div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script>
+        (function($) {
+
+            "use strict";
+
+            var fullHeight = function() {
+
+                $('.js-fullheight').css('height', $(window).height());
+                $(window).resize(function(){
+                    $('.js-fullheight').css('height', $(window).height());
+                });
+
+            };
+            fullHeight();
+
+            $('#sidebarCollapse').on('click', function () {
+              $('#sidebar').toggleClass('active');
+            });
+
+        })(jQuery);
+      {% block custom_js %}{% endblock %}
+    </script>
+  </body>
+</html>

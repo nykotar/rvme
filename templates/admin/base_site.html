@@ -1,0 +1,66 @@
+{% extends "admin/base.html" %}
+{% load i18n static %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+{% block branding %}
+    <h1 id="site-name"><a href="{% url 'admin:index' %}">{{ site_header|default:_('Django administration') }}</a></h1>
+{% endblock %}
+{% block extrastyle %}
+     <style>
+
+        .login #header h1 a {
+            color: #121416!important;
+        }
+
+         #header {
+             background: #f8f9fa;
+             color: #212529;
+         }
+
+         #header a:link {
+            color: #212529;
+         }
+
+         #header a:visited {
+            color: #212529;
+         }
+
+         #branding h1, #branding h1 a:link, #branding h1 a:visited {
+             color: #121416;
+             font-weight: 600;
+         }
+
+         div.breadcrumbs {
+             background: #e9ecef;
+             color: #212529;
+         }
+
+        div.breadcrumbs a {
+            color: #121416;
+        }
+
+        div.breadcrumbs a:hover {
+            color: #212529;
+        }
+
+        .module h2, .module caption, .inline-group h2 {
+            background: #e9ecef;
+            color: #212529;
+        }
+
+        a.section:link, a.section:visited {
+            color: #212529;
+        }
+
+        #nav-sidebar .current-app .section:link, #nav-sidebar .current-app .section:visited {
+            color: #121416;
+        }
+
+        #nav-sidebar .current-model {
+            background: #f8f9fa;
+        }
+
+     </style>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

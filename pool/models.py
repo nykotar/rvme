@@ -34,10 +34,6 @@ class Submission(models.Model):
             self.pooltarget.save()
         super(Submission, self).save(*args, **kwargs)
 
-    def delete(self):
-        self.pooltarget.feedback_img.delete()
-        super(Submission, self).delete()
-
     def image_tag(self):
         src = settings.MEDIA_URL + str(self.pooltarget.feedback_img)
         return mark_safe(f'<a href="{src}" target="blank"><img src="{src}" width="350" height="300" /></a>')
@@ -69,9 +65,6 @@ class PoolTarget(models.Model):
     def __str__(self):
         return self.description
 
-    def delete(self):
-        self.feedback_img.delete()
-        super(PoolTarget, self).delete()
 
 class Target(models.Model):
 

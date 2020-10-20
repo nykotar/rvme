@@ -1,4 +1,7 @@
 from django.contrib import admin
+from django.http import HttpResponseRedirect
+from django.utils.timezone import now
+from django.contrib import messages
 
 # Register your models here.
 from .models import Target, PoolTarget, Submission
@@ -6,18 +9,45 @@ from .models import Target, PoolTarget, Submission
 @admin.register(Submission)
 class SubmissionAdmin(admin.ModelAdmin):
 
-    list_display = ('description', 'submitted_by', 'submission_date', 'moderated', 'approved')
+    change_form_template = 'admin/submission_changeform.html'
+
+    list_display = ('description', 'submitted_by', 'submission_date', 'status')
     list_filter = ('moderated', 'approved')
-    readonly_fields = ('submitted_by', 'submission_date', 'moderated_by', 'moderated_date', 'image_tag')
+    readonly_fields = ('submitted_by', 'submission_date', 'moderated_by', 'moderated_date', 'image_tag', 'status')
 
     fieldsets = (
         (None, {
             'fields': ('image_tag', 'category', 'description', 'submitted_by', 'submission_date')
         }),
         ('Moderation', {
-            'fields': ('moderated_date', 'moderated_by', 'rejection_reason', 'approved')
+            'fields': ('status', 'moderated_date', 'moderated_by', 'rejection_reason')
         })
     )
+
+    def response_change(self, request, obj):
+        if '_approve' in request.POST:
+            obj.moderated = True
+            obj.moderated_by = request.user
+            obj.moderated_date = now()
+            obj.approved = True
+            obj.save()
+            obj.pooltarget.active = True
+            obj.pooltarget.save()
+            self.message_user(request, 'Submission approved.')
+            return HttpResponseRedirect('.')
+        elif '_reject' in request.POST:
+            if obj.rejection_reason:
+                obj.moderated = True
+                obj.moderated_by = request.user
+                obj.moderated_date = now()
+                obj.approved = False
+                obj.save()
+                obj.pooltarget.delete()
+                self.message_user(request, 'Submission rejected.')
+            else:
+                self.message_user(request, 'Please specify rejection reason.', level=messages.ERROR)
+            return HttpResponseRedirect('.')
+        return super().response_change(request, obj)
 
 admin.site.register(Target)
 admin.site.register(PoolTarget)

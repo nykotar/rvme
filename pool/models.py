@@ -41,11 +41,20 @@ class Submission(models.Model):
     def image_tag(self):
         src = settings.MEDIA_URL + str(self.pooltarget.feedback_img)
         return mark_safe(f'<a href="{src}" target="blank"><img src="{src}" width="350" height="300" /></a>')
+
+    def status(self):
+        if self.moderated:
+            if self.approved:
+                return 'Approved'
+            else:
+                return 'Rejected'
+        else:
+            return '-'
     
     image_tag.short_description = 'Feedback Image'
 
     class Meta:
-        ordering = ['submission_date']
+        ordering = ['-submission_date']
 
 class PoolTarget(models.Model):
 

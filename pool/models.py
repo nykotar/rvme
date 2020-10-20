@@ -66,6 +66,9 @@ class PoolTarget(models.Model):
     active = models.BooleanField(default=False)
     submission = models.OneToOneField(Submission, on_delete=models.CASCADE, null=True)
 
+    def __str__(self):
+        return self.description
+
     def delete(self):
         self.feedback_img.delete()
         super(PoolTarget, self).delete()

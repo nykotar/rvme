@@ -11,8 +11,9 @@ class SubmissionAdmin(admin.ModelAdmin):
 
     change_form_template = 'admin/submission_changeform.html'
 
-    list_display = ('description', 'submitted_by', 'submission_date', 'status')
-    list_filter = ('moderated', 'approved')
+    list_filter = ('moderated', 'approved', 'category')
+    list_display = ('description', 'category','submitted_by', 'submission_date', 'status')
+    search_fields = ('description', 'submitted_by__username')
     readonly_fields = ('submitted_by', 'submission_date', 'moderated_by', 'moderated_date', 'image_tag', 'status')
 
     fieldsets = (
@@ -49,5 +50,16 @@ class SubmissionAdmin(admin.ModelAdmin):
             return HttpResponseRedirect('.')
         return super().response_change(request, obj)
 
-admin.site.register(Target)
-admin.site.register(PoolTarget)
+@admin.register(PoolTarget)
+class PoolTargetAdmin(admin.ModelAdmin):
+
+    list_filter = ('category', 'active')
+    list_display = ('description', 'category', 'active')
+    search_fields = ('description',)
+
+@admin.register(Target)
+class Target(admin.ModelAdmin):
+
+    list_filter = ('revealed', 'is_precog')
+    list_display = ('target_id', 'is_precog', 'revealed', 'user', 'created')
+    search_fields = ('target_id', 'user__username')

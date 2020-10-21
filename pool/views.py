@@ -82,13 +82,6 @@ def target_detail(request, tid):
     target = get_object_or_404(Target, target_id=tid, user=request.user)
     return render(request, 'target_detail.html', {'target':target})
 
-class TargetDetailApproval(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
-
-    permission_required = 'pool.change_pooltarget'
-    model = Submission
-    context_object_name = 'submission'
-    template_name = 'moderation/target_detail_approval.html'
-
 @login_required
 def reveal_target(request, tid):
 
@@ -158,25 +151,6 @@ class UploadTargetView(LoginRequiredMixin, FormView):
         return super(UploadTargetView, self).form_valid(form)
 
 
-class PoolTargetQueueListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
-
-    permission_required = 'pool.change_pooltarget'
-    model = Submission
-    context_object_name = 'submissions'
-    queryset = Submission.objects.filter(moderated=False)
-    paginate_by = 15
-    template_name = 'moderation/approval_queue.html'
-
-class PoolTargetModeratedListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
-
-    permission_required = 'pool.change_pooltarget'
-    model = Submission
-    context_object_name = 'submissions'
-    queryset = Submission.objects.filter(moderated=True)
-    paginate_by = 15
-    template_name = 'moderation/moderated_submissions.html'
-    ordering = ['-submission_date']
-
 class ViewedTargetsListView(LoginRequiredMixin, ListView):
 
     model = Target
@@ -193,40 +167,6 @@ class ResetViewedTargets(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         Target.objects.filter(user=request.user).delete()
         return HttpResponseRedirect(reverse('pool:viewed_targets'))
-
-@login_required
-@permission_required('pool.change_pooltarget')
-def approve_target(request, pk):
-
-    submission = get_object_or_404(Submission, pk=pk)
-    submission.approved = True
-    submission.moderated = True
-    submission.moderated_date = now()
-    submission.moderated_by = request.user
-    submission.pooltarget.active = True
-    submission.save()
-    submission.pooltarget.save()
-    return HttpResponseRedirect(reverse('pool:approval_queue'))
-
-class RejectTarget(LoginRequiredMixin, PermissionRequiredMixin, View):
-    
-    permission_required = 'pool.change_pooltarget'
-
-    def post(self, request, *args, **kwargs):
-
-        form = TargetRejectForm(request.POST)
-        if form.is_valid():
-            submission = get_object_or_404(Submission, pk=kwargs['pk'])
-            submission.approved = False
-            submission.moderated = True
-            submission.moderated_by = request.user
-            submission.moderated_date = now()
-            submission.rejection_reason = form.cleaned_data['reason']
-            submission.save()
-            submission.pooltarget.feedback_img.delete()
-            submission.pooltarget.delete()
-        
-        return HttpResponseRedirect(reverse('pool:approval_queue'))
 
 @register.filter
 def get_range(value):

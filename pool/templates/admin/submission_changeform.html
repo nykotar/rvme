@@ -1,0 +1,9 @@
+{% extends 'admin/change_form.html' %}
+
+{% block submit_buttons_bottom %}
+    {{ block.super }}
+    <div class="submit-row">
+        <input type="submit" {% if original.moderated %}disabled{% endif %} value="Approve" name="_approve" id="_approve">
+        <input type="submit" {% if original.moderated and not original.approved %}disabled{% endif %} value="Reject" name="_reject" id="_reject">
+    </div>
+{% endblock %}

@@ -46,7 +46,7 @@ class SubmissionAdmin(admin.ModelAdmin):
                 obj.pooltarget.delete()
                 self.message_user(request, 'Submission rejected.')
             else:
-                self.message_user(request, 'Please specify rejection reason.', level=messages.ERROR)
+                self.message_user(request, 'Please specify the rejection reason.', level=messages.ERROR)
             return HttpResponseRedirect('.')
         return super().response_change(request, obj)
 

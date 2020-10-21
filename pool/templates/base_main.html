@@ -35,7 +35,7 @@
           </li>
           {% if perms.pool.change_pooltarget %}
             <li>
-              <a href="{% url 'pool:approval_queue' %}">Approval Queue</a>
+              <a href="/admin/pool/submission/?moderated__exact=0">Approval Queue</a>
             </li>
           {% endif %}
           <li>

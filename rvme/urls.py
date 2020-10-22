@@ -28,7 +28,7 @@ admin.site.site_url = 'https://rvme.app/pool/'
 admin.site.index_title = 'RVMe administration'
 
 urlpatterns = [
-    path('rvme/', TemplateView.as_view(template_name='index.html'), name="index"),
+    path('', TemplateView.as_view(template_name='index.html'), name="index"),
     path('pool/', include('pool.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/signup/', views.SignupView.as_view(), name='signup'),

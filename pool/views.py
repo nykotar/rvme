@@ -35,8 +35,11 @@ class GetTargetView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         if not form.cleaned_data['precognitive']:
             all_pooltargets = PoolTarget.objects.filter(category__in=form.cleaned_data['selected_categories'], active=True)
-            done_targets = Target.objects.filter(pool_target__category__in=form.cleaned_data['selected_categories'], user=self.request.user).values_list('pool_target', flat=True)
+            done_targets = Target.objects.filter(pool_target__category__in=form.cleaned_data['selected_categories'],
+                                                user=self.request.user).values_list('pool_target', flat=True)
             available_targets = all_pooltargets.exclude(pk__in=done_targets)
+            if not form.cleaned_data['incsubmitted']:
+                available_targets = available_targets.exclude(submission__submitted_by=self.request.user)
             count = available_targets.count()
             if count > 0:
                 sel_target = available_targets[randint(0, count - 1)]
@@ -70,6 +73,7 @@ class GetTargetView(LoginRequiredMixin, FormView):
             target.user = self.request.user
             target.target_id = tid
             target.is_precog = True
+            target.inc_submitted = form.cleaned_data['incsubmitted']
             target.allowed_categories = ','.join(form.cleaned_data['selected_categories'])   
             target.save()
 

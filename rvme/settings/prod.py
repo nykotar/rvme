@@ -20,3 +20,5 @@ LOGIN_REDIRECT_URL = '/pool/'
 
 MEDIA_ROOT = '/storage'
 MEDIA_URL = '/media/'
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

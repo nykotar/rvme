@@ -22,6 +22,11 @@ from django.views.generic.base import TemplateView
 
 from . import views
 
+admin.site.site_header = 'RVMe admin'
+admin.site.site_title = 'RVMe admin'
+admin.site.site_url = 'https://rvme.app/pool/'
+admin.site.index_title = 'RVMe administration'
+
 urlpatterns = [
     path('rvme/', TemplateView.as_view(template_name='index.html'), name="index"),
     path('pool/', include('pool.urls')),

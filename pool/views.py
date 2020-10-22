@@ -93,6 +93,8 @@ def reveal_target(request, tid):
 
     if target.is_precog:
         available_targets = PoolTarget.objects.filter(category__in=target.allowed_categories.split(','), active=True)
+        if not target.inc_submitted:
+            available_targets = available_targets.exclude(submission__submitted_by=request.user)
         count = available_targets.count()
         sel_target = available_targets[randint(0, count - 1)]
         target.pool_target = sel_target

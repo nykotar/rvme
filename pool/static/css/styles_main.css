@@ -49,8 +49,9 @@
           background: #f8f9fa;
           border-bottom: 1px solid #f8f9fa; }
       #sidebar ul li.active > a {
-        background: transparent;
-        color: #fff; }
+        background: #f8f9fa;
+        color: #212529;
+        text-decoration: underline; }
         #sidebar ul li.active > a:hover {
           background: #f8f9fa;
           border-bottom: 1px solid #f8f9fa; }

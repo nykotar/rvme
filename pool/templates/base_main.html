@@ -9,7 +9,7 @@
 		<link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.min.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{% static 'css/boxicons/css/boxicons.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles_generic.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles_main.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
   </head>
   <body>
@@ -24,14 +24,14 @@
         </div>
 	  		<h1 class="logo"><a class="text-decoration-none text-dark" href="{% url 'pool:index' %}">RV Me</a></h1>
         <ul class="list-unstyled components mb-5">
-          <li>
+          <li {% if request.resolver_match.view_name == 'pool:index' %}class="active"{% endif %}>
             <a href="{% url 'pool:index' %}">Practice</a>
           </li>
-          <li>
+          <li {% if request.resolver_match.view_name == 'pool:viewed_targets' %}class="active"{% endif %}>
             <a href="{% url 'pool:viewed_targets' %}">Viewed Targets</a>
           </li>
-          <li>
-            <a class="text-info" href="{% url 'pool:contribute' %}">Contribute</a>
+          <li {% if request.resolver_match.view_name == 'pool:contribute' %}class="active"{% endif %}>
+            <a href="{% url 'pool:contribute' %}">Contribute</a>
           </li>
           {% if perms.pool.change_pooltarget %}
             <li>

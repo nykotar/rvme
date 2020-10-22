@@ -22,6 +22,7 @@ class GetTargetForm(forms.Form):
     event = forms.BooleanField(required=False)
     other = forms.BooleanField(required=False)
     precognitive = forms.BooleanField(required=False)
+    incsubmitted = forms.BooleanField(required=False)
 
     def clean(self):
         cleaned_data = super().clean()

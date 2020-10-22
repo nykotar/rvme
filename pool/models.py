@@ -74,6 +74,7 @@ class Target(models.Model):
     revealed = models.BooleanField(default=False)
     reveal_date = models.DateTimeField(blank=True, null=True)
     is_precog = models.BooleanField()
+    inc_submitted = models.BooleanField(default=False)
     allowed_categories = models.CharField(max_length=64)
     created = models.DateTimeField(auto_now=True)
 

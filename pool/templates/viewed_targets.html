@@ -1,9 +1,10 @@
 {% extends "base_main.html" %}
 {% load tz %}
+
+{% block title %}Viewed Targets{% endblock %}
+{% block header %}Viewed Targets{% endblock %}
 {% block content %}
 <div class="container">
-  <h1>Viewed Targets</h1>
-  <br/>
   {% if targets %}
   <div class="form-group">
     <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#resetViewedTargetsModal">

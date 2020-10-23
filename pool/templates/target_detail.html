@@ -1,5 +1,6 @@
 {% extends "base_main.html" %}
 
+{% block title %}{{ target.target_id }}{% endblock %}
 {% block content %}
   {% if not target.revealed %}
     <div class="container-fluid h-50">

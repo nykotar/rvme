@@ -23,10 +23,12 @@ class Submission(models.Model):
     approved = models.BooleanField(default=False)
     rejection_reason = models.CharField(max_length=200, blank=True, null=True)
     category = models.CharField(max_length=12, choices=CATEGORIES, null=False, blank=False)
-    description = models.TextField()
+    tasking = models.TextField(null=False, blank=False)
+    target_description = models.CharField(max_length=255, null=False, blank=False)
+    additional_feedback = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return self.description
+        return self.target_description
 
     def save(self, *args, **kwargs):
         if self.id:
@@ -58,12 +60,14 @@ class PoolTarget(models.Model):
     feedback_img = models.ImageField()
     feedback_img_phash = models.CharField(max_length=16, unique=True)
     feedback_img_chash = models.CharField(max_length=16)
-    description = models.TextField()
+    tasking = models.TextField()
+    target_description = models.CharField(max_length=255)
+    additional_feedback = models.TextField(null=True, blank=True)
     active = models.BooleanField(default=False)
     submission = models.OneToOneField(Submission, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return self.description
+        return self.target_description
 
 
 class Target(models.Model):

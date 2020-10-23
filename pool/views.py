@@ -107,7 +107,7 @@ def reveal_target(request, tid):
 
 class UploadTargetView(LoginRequiredMixin, FormView):
 
-    template_name = 'upload_target.html'
+    template_name = 'contribute.html'
     form_class = UploadTargetForm
     success_url = '/pool/thanks/'
 
@@ -136,13 +136,19 @@ class UploadTargetView(LoginRequiredMixin, FormView):
             submission = Submission()
             submission.submitted_by = self.request.user
             submission.category = form.cleaned_data['category']
-            submission.description = form.cleaned_data['description']
+            submission.target_description = form.cleaned_data['target_description']
+            submission.tasking = form.cleaned_data['tasking']
+            if form.cleaned_data['additional_feedback']:
+                submission.additional_feedback = form.cleaned_data['additional_feedback']
             submission.save()
             
 
             upload = PoolTarget()
             upload.category = form.cleaned_data['category']
-            upload.description = form.cleaned_data['description']
+            upload.target_description = form.cleaned_data['target_description']
+            upload.tasking = form.cleaned_data['tasking']
+            if form.cleaned_data['additional_feedback']:
+                upload.additional_feedback = form.cleaned_data['additional_feedback']
             upload.feedback_img = form.cleaned_data['feedback_image']
             upload.feedback_img_chash = imagehash.colorhash(image)
             upload.feedback_img_phash = phash
@@ -150,7 +156,7 @@ class UploadTargetView(LoginRequiredMixin, FormView):
             upload.save()
         '''
         else:
-            form.add_error(None, ValidationError('Thank you, but this image appears to be already in our.'))
+            form.add_error(None, ValidationError('Thank you, but this image appears to be already in our database.'))
             return self.form_invalid(form)
         '''
 

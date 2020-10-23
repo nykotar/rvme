@@ -53,13 +53,13 @@
                   <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="precognitive" id="precognitive">
                     <label class="form-check-label text-info" for="precognitive">
-                      Precognitive <i class="bx bx-help-circle" data-toggle="tooltip" data-placement="top" title="The target is selected on reveal."></i>
+                      Precognitive <i class="far fa-question-circle" data-toggle="tooltip" data-placement="top" title="The target is selected on reveal."></i>
                     </label>
                   </div>
                   <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="incsubmitted" id="incsubmitted">
                     <label class="form-check-label" for="incsubmitted">
-                      Submitted targets <i class="bx bx-help-circle" data-toggle="tooltip" data-placement="top" title="You may get a target that you submitted."></i>
+                      Submitted targets <i class="far fa-question-circle" data-toggle="tooltip" data-placement="top" title="You may get a target that you submitted."></i>
                     </label>
                   </div>
                 </div>
@@ -77,10 +77,4 @@
       </div>
     </div>
   </div>
-{% endblock %}
-
-{% block custom_js%}
-$(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})
 {% endblock %}

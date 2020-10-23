@@ -14,11 +14,13 @@
       <h1 style="display: inline-block">{{ target.target_id }}</h1>
       {% if target.is_precog %}<span class="badge badge-info" style="vertical-align: top">Precog</span>{% endif %}
     </div>
+      <h3 class="text-muted">{{ target.pool_target.target_description }}</h3>
+      <p class="lead">{{ target.pool_target.tasking }}</p>
       <br/>
       <div class="card">
         <a href="{{ target.pool_target.feedback_img.url }}" target="_blank"><img class="card-img-top img-fluid" src="{{ target.pool_target.feedback_img.url }}" alt="{{ target.description }}"/></a>
         <div class="card-body">
-          <p class="card-text">{{ target.pool_target.description }}</p>
+          <p class="card-text">{{ target.pool_target.additional_feedback|urlize }}</p>
         </div>
         <div class="card-footer text-muted">
           Category: {{ target.pool_target.category|title }}

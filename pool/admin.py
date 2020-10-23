@@ -12,13 +12,13 @@ class SubmissionAdmin(admin.ModelAdmin):
     change_form_template = 'admin/submission_changeform.html'
 
     list_filter = ('moderated', 'approved', 'category')
-    list_display = ('description', 'category','submitted_by', 'submission_date', 'status')
-    search_fields = ('description', 'submitted_by__username')
+    list_display = ('target_description', 'category','submitted_by', 'submission_date', 'status')
+    search_fields = ('target_description', 'additional_feedback', 'submitted_by__username')
     readonly_fields = ('submitted_by', 'submission_date', 'moderated_by', 'moderated_date', 'image_tag', 'status')
 
     fieldsets = (
         (None, {
-            'fields': ('image_tag', 'category', 'description', 'submitted_by', 'submission_date')
+            'fields': ('image_tag', 'category', 'target_description', 'tasking', 'additional_feedback', 'submitted_by', 'submission_date')
         }),
         ('Moderation', {
             'fields': ('status', 'moderated_date', 'moderated_by', 'rejection_reason')
@@ -54,8 +54,8 @@ class SubmissionAdmin(admin.ModelAdmin):
 class PoolTargetAdmin(admin.ModelAdmin):
 
     list_filter = ('category', 'active')
-    list_display = ('description', 'category', 'active')
-    search_fields = ('description',)
+    list_display = ('target_description', 'category', 'active')
+    search_fields = ('target_description', 'additional_feedback')
 
 @admin.register(Target)
 class Target(admin.ModelAdmin):

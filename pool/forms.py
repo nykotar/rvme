@@ -11,7 +11,9 @@ class UploadTargetForm(forms.Form):
         ('OTHER', 'Other')
     )
     category = forms.ChoiceField(choices=categories)
-    description = forms.CharField(widget=forms.Textarea())
+    additional_feedback = forms.CharField(widget=forms.Textarea(), required=False)
+    tasking = forms.CharField(widget=forms.Textarea())
+    target_description = forms.CharField(max_length=255)
     feedback_image = forms.ImageField()
 
 class GetTargetForm(forms.Form):

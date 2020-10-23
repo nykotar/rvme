@@ -9,13 +9,13 @@
 
   <title>RV Me - {% block title %}{% endblock %}</title>
 
-  <!-- Bootstrap core CSS -->
+  <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+
+  <!-- Bootstrap and fontawesome core CSS -->
   <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/fontawesome/css/all.min.css' %}" rel="stylesheet">
 
-  <!-- Custom styles for this template -->
   <link href="{% static 'css/styles_main.css' %}" rel="stylesheet">
-
-  <link rel="stylesheet" href="{% static 'vendor/boxicons/css/boxicons.min.css' %}">
 
 </head>
 
@@ -25,24 +25,24 @@
 
     <!-- Sidebar -->
     <div class="bg-light border-right" id="sidebar-wrapper">
-      <div class="sidebar-heading">RVMe </div>
+      <div class="sidebar-heading"><a class="text-reset text-decoration-none" href="{% url 'pool:index' %}">RVMe </a></div>
       <div class="list-group list-group-flush">
         <a href="{% url 'pool:index' %}" class="list-group-item list-group-item-action bg-light {% if request.resolver_match.view_name == 'pool:index' %}active{% endif %}">
-            <i class='bx bx-target-lock'></i> Practice
+          <i class="fas fa-bullseye mr-2"></i> Practice
         </a>
         <a href="{% url 'pool:viewed_targets' %}" class="list-group-item list-group-item-action bg-light {% if request.resolver_match.view_name == 'pool:viewed_targets' %}active{% endif %}">
-            <i class='bx bx-list-ul'></i> Viewed Targets
+          <i class="fas fa-list-ul mr-2"></i> Viewed Targets
         </a>
         <a href="{% url 'pool:contribute' %}" class="list-group-item list-group-item-action bg-light {% if request.resolver_match.view_name == 'pool:contribute' %}active{% endif %}">
-            <i class='bx bxs-share-alt'></i> Contribute
+          <i class="fas fa-upload mr-2"></i> Contribute
         </a>
         {% if perms.pool.change_submission %}
             <a href="/admin/pool/submission/?moderated__exact=0" class="list-group-item list-group-item-action bg-light">
-                <i class='bx bx-add-to-queue'></i> Approval Queue
+              <i class="fas fa-list mr-2"></i> Approval Queue
             </a>
         {% endif %}
         <a href="/accounts/logout" class="list-group-item list-group-item-action bg-light">
-            <i class='bx bx-log-out'></i> Log out
+          <i class="fas fa-sign-out-alt mr-2"></i> Log out
         </a>
       </div>
     </div>
@@ -58,7 +58,6 @@
       </nav>
 
       <div class="container-fluid">
-        <h1 class="mt-4">{% block header %}{% endblock %}</h1>
         {% block content %}{% endblock %}
       </div>
     </div>
@@ -77,6 +76,10 @@
       e.preventDefault();
       $("#wrapper").toggleClass("toggled");
     });
+
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
   </script>
 
 </body>

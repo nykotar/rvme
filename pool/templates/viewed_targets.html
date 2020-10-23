@@ -2,10 +2,10 @@
 {% load tz %}
 
 {% block title %}Viewed Targets{% endblock %}
-{% block header %}Viewed Targets{% endblock %}
 {% block content %}
 <div class="container">
   {% if targets %}
+  <h1 class="mt-4 mb-4">Viewed Targets</h1>
   <div class="form-group">
     <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#resetViewedTargetsModal">
       Reset

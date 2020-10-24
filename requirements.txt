@@ -5,3 +5,4 @@ psycopg2-binary
 gunicorn
 dj-database-url
 whitenoise[brotli]
+django-recaptcha

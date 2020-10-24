@@ -2,12 +2,13 @@ from django.http import HttpResponse
 from django.views.generic.edit import FormView
 from django.contrib.auth import login, authenticate
 
-from django.contrib.auth.forms import UserCreationForm
+#from django.contrib.auth.forms import UserCreationForm
+from .forms import RecaptchaUserCreationForm
 
 class SignupView(FormView):
 
     template_name = 'registration/signup.html'
-    form_class = UserCreationForm
+    form_class = RecaptchaUserCreationForm
     success_url = '/pool/'
 
     def form_valid(self, form):

@@ -33,6 +33,9 @@ class SubmissionAdmin(admin.ModelAdmin):
             obj.approved = True
             obj.save()
             obj.pooltarget.active = True
+            obj.pooltarget.target_description = obj.target_description
+            obj.pooltarget.tasking = obj.tasking
+            obj.pooltarget.additional_feedback = obj.additional_feedback
             obj.pooltarget.save()
             self.message_user(request, 'Submission approved.')
             return HttpResponseRedirect('.')

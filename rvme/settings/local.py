@@ -24,3 +24,5 @@ LOGIN_REDIRECT_URL = '/pool/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']

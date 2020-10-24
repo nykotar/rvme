@@ -1,6 +1,9 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV2Checkbox
+
 class UploadTargetForm(forms.Form):
     categories = (
         ('PERSON', 'Person'),
@@ -15,6 +18,7 @@ class UploadTargetForm(forms.Form):
     tasking = forms.CharField(widget=forms.Textarea())
     target_description = forms.CharField(max_length=255)
     feedback_image = forms.ImageField()
+    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
 
 class GetTargetForm(forms.Form):
     person = forms.BooleanField(required=False)

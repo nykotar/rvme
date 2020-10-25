@@ -13,6 +13,7 @@
     <link href="{% static 'vendor/fontawesome/css/all.min.css' %}" rel="stylesheet">
 
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    {% block custom_css %}{% endblock %}
     
     <script async src="https://www.googletagmanager.com/gtag/js?id={% ganalytics_id %}"></script>
 

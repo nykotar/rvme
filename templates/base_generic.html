@@ -1,17 +1,21 @@
 {% load static %}
+{% load ganalytics_id %}
 <!doctype html>
 <html lang="en">
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
     <link href="{% static 'vendor/fontawesome/css/all.min.css' %}" rel="stylesheet">
+
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
-    {% block custom_css %}{% endblock %}
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id={% ganalytics_id %}"></script>
+
     {% block title %}<title>RV Me - Target Pool</title>{% endblock %}
   </head>
   <body>
@@ -50,5 +54,12 @@
     <script src="{% static 'js/jquery.slim.min.js' %}"></script>
     <script src="{% static 'js/popper.min.js' %}"></script>
     <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', '{% ganalytics_id %}');
+    </script>
   </body>
 </html>

@@ -59,6 +59,10 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'random_quote': 'rvme.templatetags.random_quote',
+                'ganalytics_id': 'rvme.templatetags.ganalytics_id'
+            }
         },
     },
 ]
@@ -102,3 +106,5 @@ USE_L10N = True
 USE_TZ = True
 
 IMAGE_MAX_SIZE = (1028, 1028)
+
+GOOGLE_ANALYTICS_ID = os.environ.get('GOOGLE_ANALYTICS_ID', '')

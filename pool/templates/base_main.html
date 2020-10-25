@@ -1,4 +1,5 @@
 {% load static %}
+{% load ganalytics_id %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,6 +17,8 @@
   <link href="{% static 'vendor/fontawesome/css/all.min.css' %}" rel="stylesheet">
 
   <link href="{% static 'css/styles_main.css' %}" rel="stylesheet">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id={% ganalytics_id %}"></script>
 
 </head>
 
@@ -80,6 +83,13 @@
     $(function () {
       $('[data-toggle="tooltip"]').tooltip()
     })
+
+    window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '{% ganalytics_id %}');
+    
+    {% block custom_js %}{% endblock %}
   </script>
 
 </body>

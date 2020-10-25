@@ -146,3 +146,13 @@
   float: right;
   font-size: 13px;
 }
+
+.errorlist {
+  list-style-type: none;
+  padding: 0!important;
+  padding-inline-start: 0!important;
+}
+
+.errorlist li{
+  color: #dc3545!important;
+}

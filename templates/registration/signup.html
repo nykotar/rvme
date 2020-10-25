@@ -23,25 +23,23 @@
                   {% csrf_token %}
                   <div class="form-group">
                      <label>Username</label>
+                     {{ form.username.errors }}
                      <input type="text" class="form-control" name="username" autocomplete="username" placeholder="Username" autofocus required>
                   </div>
                   <div class="form-group">
                      <label>Password</label>
+                     {{ form.password1.errors }}
                      <input type="password" class="form-control" name="password1" placeholder="Password" minlength="8" required>
                   </div>
                   <div class="form-group">
                      <label>Repeat password</label>
+                     {{ form.password2.errors }}
                      <input type="password" class="form-control" name="password2" placeholder="Repeat password" minlength="8" required>
                      <small class="form-text text-muted">Already have an account? <a class="text-black-50" href="{% url 'login' %}">Log in</a></small>
                   </div>
-                  {% if form.errors %}
-                      {% for field in form %}
-                          {% for error in field.errors %}
-                              <p class="text-danger">{{ error }}</p>
-                          {% endfor %}
-                      {% endfor %}
-                  {% endif %}
+                  {{ form.recaptcha.errors }}
                   {{ form.recaptcha }}
+                  {{ form.non_field_errors }}
                   <button type="submit" class="btn btn-dark mt-2">Sign up</button>
                </form>
             </div>

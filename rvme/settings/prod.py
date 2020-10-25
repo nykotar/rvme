@@ -15,9 +15,6 @@ ALLOWED_HOSTS = ["rvme.app"]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-# Redirect to home URL after login (Default redirects to /accounts/profile/)
-LOGIN_REDIRECT_URL = '/pool/'
-
 MEDIA_ROOT = '/storage'
 MEDIA_URL = '/media/'
 

@@ -87,3 +87,11 @@ class Target(models.Model):
 
     class Meta:
         ordering = ['-created']
+
+class PersonalTarget(models.Model):
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    tasking = models.TextField()
+    tid = models.CharField(max_length=9, null=True, blank=True)
+    active = models.BooleanField(default=False)
+    revealed = models.BooleanField(default=False)

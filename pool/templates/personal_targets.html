@@ -1,0 +1,78 @@
+{% extends "base_main.html" %}
+{% load static %}
+
+{% block title %}Personal Targets{% endblock %}
+{% block custom_css %}<link rel="stylesheet" href="{% static 'css/easymde.min.css' %}">{% endblock %}
+{% block content %}
+
+  {% if current %}
+    <div class="alert alert-warning" role="alert">
+      You have a personal target pending - <b>{{ current.tid }}</b>. Click <a href="{% url 'pool:personal_target_detail' current.tid %}" class="alert-link">here</a> to resume or <a href="" class="alert-link">here</a> to send the target back to the pool.
+    </div>
+  {% endif %}
+
+  {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-success" role="alert">
+      {{ message }}
+    </div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="container mt-4">
+    <h1 class="mt-4 mb-4">Personal Targets</h1>
+    <div class="form-group">
+      <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#newPersonalTargetModal">
+        New Target
+      </button>
+    </div>
+    <div class="card text-center" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">Targets</h5>
+        <p class="card-text target-count">{{ target_count }}</p>
+        {% if target_count > 0 and not current %}
+          <form method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-dark" name="tasking">Get target</button>
+          </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="newPersonalTargetModal" tabindex="-1" role="dialog" aria-labelledby="newPersonalTargetModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="newPersonalTargetModalTitle">New Personal Target</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{% url 'pool:new_personal_target' %}" method="POST">
+          {% csrf_token %}
+          <div class="modal-body">
+            <p>Write the tasking for your target:</p>
+            <textarea id="tasking" name="tasking"></textarea>
+            <small class="text-muted">Personal targets cannot be edited after added to the pool.</small>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-dark">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block custom_js %}
+<script src="{% static 'js/easymde.min.js' %}"></script>
+<script>
+  var easyMDE = new EasyMDE({element: $('#tasking')[0], 
+  toolbar: ["bold", "italic", "heading", "|", "unordered-list", "ordered-list", "|", "link", "image", "|", "preview", "side-by-side", "fullscreen", "|", "guide"]});
+</script>
+{% endblock %}

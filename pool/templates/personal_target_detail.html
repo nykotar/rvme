@@ -1,0 +1,29 @@
+{% extends "base_main.html" %}
+
+{% block title %}{{ target.tid }}{% endblock %}
+{% block content %}
+  {% if not target.revealed %}
+    <div class="container-fluid">
+      <div class="row justify-content-center align-items-center" style="margin-top: 15%">
+        <h1 id="tid"><a class="btn btn-outline-dark btn-xlg" href="{% url 'pool:reveal_personal_target' target.tid %}">{{ target.tid }}</a></h1>
+      </div>
+    </div>
+  {% else %}
+    <div class="container mt-4">
+      <div class="mb-3">
+          <h1 style="display: inline-block">{{ target.tid }}</h1>
+      </div>
+      {{ target.tasking|safe }}
+    </div>
+    <div class="container mt-5">
+      <div class="form-group">
+        <a class="btn btn-sm btn-dark" href="{% url 'pool:conclude_personal_target' target.tid %}">
+          Conclude target
+        </a>
+        <a class="btn btn-sm btn-link" href="{% url 'pool:return_personal_target' target.tid %}">
+          Return target to the pool
+        </a>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

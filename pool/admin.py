@@ -4,7 +4,7 @@ from django.utils.timezone import now
 from django.contrib import messages
 
 # Register your models here.
-from .models import Target, PoolTarget, Submission
+from .models import Target, PoolTarget, Submission, PersonalTarget
 
 @admin.register(Submission)
 class SubmissionAdmin(admin.ModelAdmin):
@@ -61,8 +61,10 @@ class PoolTargetAdmin(admin.ModelAdmin):
     search_fields = ('target_description', 'additional_feedback')
 
 @admin.register(Target)
-class Target(admin.ModelAdmin):
+class TargetAdmin(admin.ModelAdmin):
 
     list_filter = ('revealed', 'is_precog')
     list_display = ('target_id', 'is_precog', 'revealed', 'user', 'created')
     search_fields = ('target_id', 'user__username')
+
+admin.site.register(PersonalTarget)

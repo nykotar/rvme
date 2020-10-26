@@ -91,7 +91,7 @@ def target_detail(request, tid):
     return render(request, 'target_detail.html', {'target':target})
 
 def target_detail_public(request, uuid):
-    target = get_object_or_404(Target, target_uid=uuid, user=request.user)
+    target = get_object_or_404(Target, target_uid=uuid)
     return render(request, 'target_detail.html', {'target':target})
 
 @login_required

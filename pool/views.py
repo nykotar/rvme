@@ -24,7 +24,7 @@ from random import randint
 import imagehash
 from PIL import Image
 import io
-import uuid
+import uuid, shortuuid
 import markdown
 
 # Create your views here.
@@ -55,6 +55,7 @@ class GetTargetView(LoginRequiredMixin, FormView):
                 target = Target()
                 target.user = self.request.user
                 target.target_id = tid
+                target.target_uid = shortuuid.uuid()
                 target.pool_target = sel_target
                 target.is_precog = False
                 target.allowed_categories = ','.join(form.cleaned_data['selected_categories'])
@@ -74,6 +75,7 @@ class GetTargetView(LoginRequiredMixin, FormView):
             target = Target()
             target.user = self.request.user
             target.target_id = tid
+            target.target_uid = shortuuid.uuid()
             target.is_precog = True
             target.inc_submitted = form.cleaned_data['incsubmitted']
             target.allowed_categories = ','.join(form.cleaned_data['selected_categories'])   
@@ -86,6 +88,10 @@ class GetTargetView(LoginRequiredMixin, FormView):
 @login_required
 def target_detail(request, tid):
     target = get_object_or_404(Target, target_id=tid, user=request.user)
+    return render(request, 'target_detail.html', {'target':target})
+
+def target_detail_public(request, uuid):
+    target = get_object_or_404(Target, target_uid=uuid, user=request.user)
     return render(request, 'target_detail.html', {'target':target})
 
 @login_required

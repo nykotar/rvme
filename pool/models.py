@@ -73,6 +73,7 @@ class PoolTarget(models.Model):
 class Target(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    target_uid = models.CharField(max_length=22, unique=True)
     target_id = models.CharField(max_length=9)
     pool_target = models.ForeignKey(PoolTarget, on_delete=models.CASCADE, null=True)
     revealed = models.BooleanField(default=False)

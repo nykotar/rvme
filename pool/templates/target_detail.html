@@ -1,4 +1,5 @@
 {% extends "base_main.html" %}
+{% load static %}
 
 {% block title %}{{ target.target_id }}{% endblock %}
 {% block content %}
@@ -20,10 +21,24 @@
       <div class="d-flex justify-content-center">
         <a href="{{ target.pool_target.feedback_img.url }}" target="_blank"><img class="card-img-top img-fluid" style="max-width: 600px;" src="{{ target.pool_target.feedback_img.url }}" alt="{{ target.target_description }}"/></a>
       </div>
-      <div class="container mt-4">
+      <div class="container mt-4 mb-4">
         <p class="card-text">{{ target.pool_target.additional_feedback|default_if_none:""|urlize }}</p>
         <p class="text-muted">Category: {{ target.pool_target.category|title }}</p>
+        <div class="input-group mt-4 mb-4 col-4 float-right row">
+          <label class="col-form-label mr-2" for="share-link">Share</label>
+          <input type="text" id="share-link" class="form-control" value="{{request.scheme}}://{{request.META.HTTP_HOST}}{% url 'pool:shared_target_detail' target.target_uid %}" readonly>
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" data-clipboard-target="#share-link">Copy</button>
+          </div>
+        </div>
       </div>
     </div>
   {% endif %}
+{% endblock %}
+
+{% block custom_js %}
+    <script src="{% static 'js/clipboard.min.js' %}"></script>
+    <script>
+      new ClipboardJS('.btn');
+    </script>
 {% endblock %}

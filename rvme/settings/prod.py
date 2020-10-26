@@ -15,9 +15,6 @@ ALLOWED_HOSTS = ["rvme.app"]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-# Redirect to home URL after login (Default redirects to /accounts/profile/)
-LOGIN_REDIRECT_URL = '/pool/'
-
 MEDIA_ROOT = '/storage'
 MEDIA_URL = '/media/'
 
@@ -25,3 +22,5 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')
+
+FERNET_KEY = os.environ.get('FERNET_KEY').encode('ascii')

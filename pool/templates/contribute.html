@@ -10,6 +10,7 @@
             {% csrf_token %}
             <div class="form-group col-md-6">
               <label for="category">Category *</label>
+              {{ form.category.errors }}
               <select id="category" name="category" class="form-control" required>
                 <option disabled selected>Select a Category</option>
                 <option value="EVENT">Event</option>
@@ -22,33 +23,27 @@
             </div>
             <div class="form-group col-md-10">
               <label for="description">Target Description *</label>
+              {{ form.target_description.errors }}
               <input type="text" class="form-control" name="target_description" id="target_description" placeholder="What/where/who the target is." maxlength="255" required></input>
             </div>
             <div class="form-group col-md-10">
               <label for="tasking">Tasking *</label>
+              {{ form.tasking.errors }}
               <textarea class="form-control" rows="3" name="tasking" id="tasking" required>Perceive what is in the photo, from the perspective the photo was taken, at the time the photo was taken.</textarea>
             </div>
             <div class="form-group col-md-10">
               <label for="additional_feedback">Additional Feedback</label>
-              <textarea class="form-control" rows="3" name="aditional_feedback" id="additional_feedback" placeholder="More information about the target (optional)."></textarea>
+              {{ form.additional_feedback.errors }}
+              <textarea class="form-control" rows="3" name="additional_feedback" id="additional_feedback" placeholder="More information about the target (optional)."></textarea>
             </div>
             <div class="form-group col-md-8">
               <label for="feedback_image">Feedback Image *</label>
+              {{ form.feedback_image.errors }}
               <input type="file" accept="image/*" class="form-control-file" id="feedback_image" name="feedback_image" required>
             </div>
-            {% if form.non_field_errors %}
-                {% for error in form.non_field_errors %}
-                    <p class="text-danger">{{ error }}</p>
-                {% endfor %}
-            {% endif %}
-            {% if form.errors %}
-                {% for field in form %}
-                    {% for error in field.errors %}
-                        <p class="text-danger">{{ error }}</p>
-                    {% endfor %}
-                {% endfor %}
-            {% endif %}
+            {{ form.captcha.errors }}
             {{ form.captcha }}
+            {{ form.non_field_errors }}
             <button type="submit" class="btn btn-dark mt-2">Submit</button>
         </form>
       </div>
@@ -103,15 +98,17 @@
 {% endblock %}
 
 {% block custom_js %}
+  <script>
       $(function () {
       $('[data-toggle="tooltip"]').tooltip()
       })
       var uploadField = document.getElementById("feedback_image");
 
       uploadField.onchange = function() {
-          if(this.files[0].size > 2097152 * 5){
-            alert("File is too big! Max allowed is 10MB.");
+          if(this.files[0].size > 2097152 * 4){
+            alert("File is too big! Max allowed is 8MB.");
             this.value = "";
           };
       };
+  </script>
 {% endblock %}

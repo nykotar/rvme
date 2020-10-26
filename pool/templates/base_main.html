@@ -1,4 +1,5 @@
 {% load static %}
+{% load ganalytics_id %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,12 +18,46 @@
 
   <link href="{% static 'css/styles_main.css' %}" rel="stylesheet">
 
+  {% block custom_css %}{% endblock %}
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id={% ganalytics_id %}"></script>
+
 </head>
 
 <body>
 
+  {% if not user.is_authenticated %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand text-dark" id="logo" href="{% url 'index' %}">RV Me</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-2 mr-auto">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Community
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="https://reddit.com/r/remoteviewing">Reddit</a>
+                <a class="dropdown-item" href="https://discord.gg/4sWvxzN">Discord</a>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://github.com/nykotar/rvme">GitHub</a>
+            </li>
+        </ul>
+        <div class="ml-auto">
+          <a href="{% url 'login' %}" class="btn btn-outline-dark" role="button">Log in</a>
+          <a href="{% url 'signup' %}" class="btn btn-dark" role="button">Sign up</a>
+        </div>
+      </div>
+    </nav>
+  {% endif %}
+
   <div class="d-flex" id="wrapper">
 
+    {% if user.is_authenticated %}
     <!-- Sidebar -->
     <div class="bg-light border-right" id="sidebar-wrapper">
       <div class="sidebar-heading"><a class="text-reset text-decoration-none" href="{% url 'pool:index' %}">RVMe </a></div>
@@ -32,6 +67,9 @@
         </a>
         <a href="{% url 'pool:viewed_targets' %}" class="list-group-item list-group-item-action bg-light {% if request.resolver_match.view_name == 'pool:viewed_targets' %}active{% endif %}">
           <i class="fas fa-list-ul mr-2"></i> Viewed Targets
+        </a>
+        <a href="{% url 'pool:personal_targets' %}" class="list-group-item list-group-item-action bg-light {% if request.resolver_match.view_name == 'pool:personal_targets' %}active{% endif %}">
+          <i class="fas fa-dot-circle mr-2"></i> Personal Targets
         </a>
         <a href="{% url 'pool:contribute' %}" class="list-group-item list-group-item-action bg-light {% if request.resolver_match.view_name == 'pool:contribute' %}active{% endif %}">
           <i class="fas fa-upload mr-2"></i> Contribute
@@ -47,15 +85,18 @@
       </div>
     </div>
     <!-- /#sidebar-wrapper -->
+    {% endif %}
 
     <!-- Page Content -->
     <div id="page-content-wrapper">
 
+      {% if user.is_authenticated %}
       <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
         <a class="btn btn-light" id="menu-toggle">
           <span class="navbar-toggler-icon"></span>
         </a>
       </nav>
+      {% endif %}
 
       <div class="container-fluid">
         {% block content %}{% endblock %}
@@ -67,7 +108,7 @@
   <!-- /#wrapper -->
 
   <!-- Bootstrap core JavaScript -->
-  <script src="{% static 'js/jquery.slim.min.js' %}"></script>
+  <script src="{% static 'js/jquery.min.js' %}"></script>
   <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
   <!-- Menu Toggle Script -->
@@ -80,8 +121,14 @@
     $(function () {
       $('[data-toggle="tooltip"]').tooltip()
     })
-  </script>
 
+    window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '{% ganalytics_id %}');
+    
+  </script>
+  {% block custom_js %}{% endblock %}
 </body>
 
 </html>

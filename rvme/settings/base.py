@@ -59,6 +59,10 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'random_quote': 'rvme.templatetags.random_quote',
+                'ganalytics_id': 'rvme.templatetags.ganalytics_id'
+            }
         },
     },
 ]
@@ -84,6 +88,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# Redirect to home URL after login (Default redirects to /accounts/profile/)
+LOGIN_REDIRECT_URL = '/pool/'
+LOGOUT_REDIRECT_URL = '/'
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -98,3 +106,5 @@ USE_L10N = True
 USE_TZ = True
 
 IMAGE_MAX_SIZE = (1028, 1028)
+
+GOOGLE_ANALYTICS_ID = os.environ.get('GOOGLE_ANALYTICS_ID', '')

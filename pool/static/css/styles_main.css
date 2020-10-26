@@ -55,3 +55,17 @@
   line-height: 1.5;
   border-radius: .3rem;
 }
+
+.errorlist {
+  list-style-type: none;
+  padding: 0!important;
+  padding-inline-start: 0!important;
+}
+
+.errorlist li{
+  color: #dc3545!important;
+}
+
+.target-count {
+  font-size: 2.5rem;
+}

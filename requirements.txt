@@ -8,3 +8,4 @@ whitenoise[brotli]
 django-recaptcha
 markdown
 cryptography
+shortuuid

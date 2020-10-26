@@ -6,3 +6,5 @@ gunicorn
 dj-database-url
 whitenoise[brotli]
 django-recaptcha
+markdown
+cryptography

@@ -23,3 +23,5 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+
+FERNET_KEY = b'pcIyP04gM-i8-Yu7_cKrj5wS-JCM4IMQaFJ9vNUnexE='

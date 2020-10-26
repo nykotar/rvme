@@ -46,6 +46,5 @@ class GetTargetForm(forms.Form):
         cleaned_data['selected_categories'] = selected_categories
         return cleaned_data
 
-class TargetRejectForm(forms.Form):
-
-    reason = forms.CharField(widget=forms.Textarea(), max_length=200)
+class NewPersonalTargetForm(forms.Form):
+    tasking = forms.CharField(widget=forms.Textarea(), required=True)

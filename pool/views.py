@@ -5,25 +5,27 @@ from django.utils.timezone import now
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib import messages
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.exceptions import ValidationError
 
 from django.template.defaulttags import register
 
-from pool.forms import UploadTargetForm, GetTargetForm, TargetRejectForm
-from pool.models import PoolTarget, Target, Submission
+from pool.forms import UploadTargetForm, GetTargetForm, NewPersonalTargetForm
+from pool.models import PoolTarget, Target, Submission, PersonalTarget
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views import View
 
-from .utils import gen_tid
+from .utils import gen_tid, encrypt, decrypt
 
 from random import randint
 import imagehash
 from PIL import Image
 import io
 import uuid
+import markdown
 
 # Create your views here.
 
@@ -180,6 +182,74 @@ class ResetViewedTargets(LoginRequiredMixin, View):
         Target.objects.filter(user=request.user).delete()
         return HttpResponseRedirect(reverse('pool:viewed_targets'))
 
+'''
+** Personal Targets
+'''
+class PersonalTargetsView(LoginRequiredMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        target_count = PersonalTarget.objects.filter(user=request.user).count()
+        try:
+            current = PersonalTarget.objects.filter(user=request.user, active=True).get()
+        except PersonalTarget.DoesNotExist:
+            current = None
+        return render(request, 'personal_targets.html', context={'target_count': target_count, 'current':current})
+
+    def post(self, request, *args, **kwargs):
+        target_count = PersonalTarget.objects.filter(user=request.user).count()
+        if target_count:
+            available = PersonalTarget.objects.filter(user=request.user).all()
+            selected = available[randint(0, target_count - 1)]
+            selected.active = True
+            selected.tid = gen_tid()
+            selected.save()
+            return HttpResponseRedirect(reverse('pool:personal_target_detail', kwargs={'tid':selected.tid}))
+        else:
+            return HttpResponseRedirect(reverse('pool:personal_targets'))
+
+class NewPersonalTargetView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        form = NewPersonalTargetForm(request.POST)
+        if form.is_valid():
+            personal_target = PersonalTarget()
+            personal_target.user = request.user
+            html = markdown.markdown(form.cleaned_data['tasking'], extensions=['sane_lists'])
+            personal_target.tasking = encrypt(html)
+            personal_target.save()
+        return HttpResponseRedirect(reverse('pool:personal_targets'))
+
+@login_required
+def personal_target_detail(request, tid):
+    target = get_object_or_404(PersonalTarget, tid=tid, user=request.user)
+    return render(request, 'personal_target_detail.html', {'target':target})
+
+@login_required
+def reveal_personal_target(request, tid):
+    target = get_object_or_404(PersonalTarget, tid=tid, user=request.user)
+    target.revealed = True
+    target.save()
+    return HttpResponseRedirect(reverse('pool:personal_target_detail', kwargs={'tid':tid}))
+
+@login_required
+def conclude_personal_target(request, tid):
+    target = get_object_or_404(PersonalTarget, tid=tid, user=request.user)
+    target.delete()
+    messages.success(request, 'The target was concluded and removed from the pool.')
+    return HttpResponseRedirect(reverse('pool:personal_targets'))
+
+@login_required
+def return_personal_target(request, tid):
+    target = get_object_or_404(PersonalTarget, tid=tid, user=request.user)
+    target.active = False
+    target.revealed = False
+    target.save()
+    messages.success(request, 'The target was returned to the pool.')
+    return HttpResponseRedirect(reverse('pool:personal_targets'))
+
 @register.filter
 def get_range(value):
     return range(1, value + 1)
+
+@register.filter
+def decryptTxt(value):
+    return decrypt(value)

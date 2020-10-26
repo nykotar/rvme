@@ -7,7 +7,7 @@
 
   {% if current %}
     <div class="alert alert-warning" role="alert">
-      You have a personal target pending - <b>{{ current.tid }}</b>. Click <a href="{% url 'pool:personal_target_detail' current.tid %}" class="alert-link">here</a> to resume or <a href="" class="alert-link">here</a> to send the target back to the pool.
+      You have a personal target pending - <b>{{ current.tid }}</b>. Click <a href="{% url 'pool:personal_target_detail' current.tid %}" class="alert-link">here</a> to resume or <a href="{% url 'pool:return_personal_target' current.tid %}" class="alert-link">here</a> to send the target back to the pool.
     </div>
   {% endif %}
 

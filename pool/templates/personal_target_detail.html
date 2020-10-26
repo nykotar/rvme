@@ -13,7 +13,7 @@
       <div class="mb-3">
           <h1 style="display: inline-block">{{ target.tid }}</h1>
       </div>
-      {{ target.tasking|safe }}
+      {{ target.tasking|decryptTxt|safe }}
     </div>
     <div class="container mt-5">
       <div class="form-group">

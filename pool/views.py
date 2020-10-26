@@ -18,7 +18,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views import View
 
-from .utils import gen_tid
+from .utils import gen_tid, encrypt, decrypt
 
 from random import randint
 import imagehash
@@ -213,7 +213,8 @@ class NewPersonalTargetView(LoginRequiredMixin, View):
         if form.is_valid():
             personal_target = PersonalTarget()
             personal_target.user = request.user
-            personal_target.tasking = markdown.markdown(form.cleaned_data['tasking'], extensions=['sane_lists'])
+            html = markdown.markdown(form.cleaned_data['tasking'], extensions=['sane_lists'])
+            personal_target.tasking = encrypt(html)
             personal_target.save()
         return HttpResponseRedirect(reverse('pool:personal_targets'))
 
@@ -248,3 +249,7 @@ def return_personal_target(request, tid):
 @register.filter
 def get_range(value):
     return range(1, value + 1)
+
+@register.filter
+def decryptTxt(value):
+    return decrypt(value)

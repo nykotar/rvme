@@ -11,3 +11,4 @@ cryptography
 shortuuid
 pytest-factoryboy
 coverage
+codecov

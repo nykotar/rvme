@@ -13,9 +13,6 @@ env:
 install:
     - pip install -r requirements.txt
 
-before_script:
-    - psql -c 'create database travis;' -U postgres
-
 script:
     - coverage run ./manage.py test
 after_success:

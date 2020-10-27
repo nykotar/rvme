@@ -29,6 +29,9 @@ import markdown
 
 # Create your views here.
 
+'''
+** Practice views
+'''
 class GetTargetView(LoginRequiredMixin, FormView):
     template_name = 'home.html'
     form_class = GetTargetForm
@@ -113,6 +116,9 @@ def reveal_target(request, tid):
 
     return HttpResponseRedirect(reverse('pool:target_detail', kwargs={'tid': tid}))
 
+'''
+** Contribute views
+'''
 class UploadTargetView(LoginRequiredMixin, FormView):
 
     template_name = 'contribute.html'
@@ -170,7 +176,9 @@ class UploadTargetView(LoginRequiredMixin, FormView):
 
         return super(UploadTargetView, self).form_valid(form)
 
-
+'''
+** Viewed targets views
+'''
 class ViewedTargetsListView(LoginRequiredMixin, ListView):
 
     model = Target

@@ -100,6 +100,7 @@ class TestContributeViews(TestCase):
         response = self.client.post(self.contribute_url,
          {'category': 'OTHER',
           'target_description': 'This is a test',
+          'additional_feedback': 'Yes.. just a test.',
           'tasking': 'This is a test',
           'feedback_image': feedback_file,
           'g-recaptcha-response': 'PASSED'},

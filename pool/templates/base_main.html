@@ -125,7 +125,7 @@
     window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', '{% ganalytics_id %}');
+      gtag('config', '{% ganalytics_id %}, { 'anonymize_ip': true }');
     
   </script>
   {% block custom_js %}{% endblock %}

@@ -1,0 +1,19 @@
+dist: bionic
+language: python
+cache: pip
+services:
+    - postgresql
+
+python:
+    - 3.8.6
+
+env:
+    - DJANGO_SETTINGS_MODULE="rvme.settings.travis"
+
+install:
+    - pip install -r requirements.txt
+
+script:
+    - coverage run ./manage.py test
+after_success:
+    - codecov

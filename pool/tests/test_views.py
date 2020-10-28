@@ -21,6 +21,20 @@ def create_image(storage, filename, size=(100, 100), image_mode='RGB', image_for
     image_file = ContentFile(data.read())
     return storage.save(filename, image_file)
 
+class TestAccounts(TestCase):
+
+    @patch("captcha.fields.client.submit")
+    def test_can_signup(self, mocked_submit):
+        mocked_submit.return_value = RecaptchaResponse(is_valid=True) 
+        response = self.client.post(reverse('signup'),
+         {'username':'test',
+          'password1':'aolswontgetme',
+          'password2':'aolswontgetme',
+          'g-recaptcha-response': 'PASSED'},
+          follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.redirect_chain[0][0], reverse('pool:index'))
+
 class TestPracticeViews(TestCase):
 
     def setUp(self):

@@ -13,6 +13,7 @@ from django.template.defaulttags import register
 
 from pool.forms import UploadTargetForm, GetTargetForm, NewPersonalTargetForm
 from pool.models import PoolTarget, Target, Submission, PersonalTarget
+from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -29,6 +30,9 @@ import markdown
 
 # Create your views here.
 
+'''
+** Practice views
+'''
 class GetTargetView(LoginRequiredMixin, FormView):
     template_name = 'home.html'
     form_class = GetTargetForm
@@ -113,6 +117,9 @@ def reveal_target(request, tid):
 
     return HttpResponseRedirect(reverse('pool:target_detail', kwargs={'tid': tid}))
 
+'''
+** Contribute views
+'''
 class UploadTargetView(LoginRequiredMixin, FormView):
 
     template_name = 'contribute.html'
@@ -170,7 +177,12 @@ class UploadTargetView(LoginRequiredMixin, FormView):
 
         return super(UploadTargetView, self).form_valid(form)
 
+class ThanksTemplateView(LoginRequiredMixin, TemplateView):
+    template_name = 'thanks.html'
 
+'''
+** Viewed targets views
+'''
 class ViewedTargetsListView(LoginRequiredMixin, ListView):
 
     model = Target

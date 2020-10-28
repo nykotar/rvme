@@ -1,0 +1,11 @@
+[run]
+command_line = ./manage.py test -k
+source = .
+branch = True
+omit =
+    */settings/*
+    */migrations/*
+    manage.py
+    rvme/wsgi.py
+    rvme/asgi.py
+    */tests/*

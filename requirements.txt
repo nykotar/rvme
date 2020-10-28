@@ -9,3 +9,6 @@ django-recaptcha
 markdown
 cryptography
 shortuuid
+pytest-factoryboy
+coverage
+codecov

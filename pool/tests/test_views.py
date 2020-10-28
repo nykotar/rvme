@@ -74,6 +74,33 @@ class TestPracticeViews(TestCase):
         response = self.client.get(reverse('pool:shared_target_detail', kwargs={'uuid':target.target_uid}))
         self.assertEqual(response.status_code, 200)
 
+    def test_anonymous_user_cant_access_viewed_targets(self):
+        viewed_targets_url = reverse('pool:viewed_targets')
+        response = self.client.get(viewed_targets_url, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.redirect_chain[0][0],
+                         settings.LOGIN_URL + '?next=' + viewed_targets_url)
+
+    def test_logged_user_can_access_viewed_targets(self):
+        self.client.login(username=self.user.username, password='test123')
+        viewed_targets_url = reverse('pool:viewed_targets')
+        response = self.client.get(viewed_targets_url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_reset_viewed_targets(self):
+        self.client.login(username=self.user.username, password='test123')
+        factories.Target(user=self.user,
+         target_uid='uuid',
+         target_id='1234-4321',
+         is_precog=True,
+         allowed_categories='OTHER').save()
+        self.assertGreater(Target.objects.filter(user=self.user).count(), 0)
+        reset_viewed_targets_url = reverse('pool:reset_viewed_targets')
+        response = self.client.post(reset_viewed_targets_url, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.redirect_chain[0][0], reverse('pool:viewed_targets'))
+        self.assertEqual(Target.objects.filter(user=self.user).count(), 0)
+
 class TestContributeViews(TestCase):
 
     def setUp(self):

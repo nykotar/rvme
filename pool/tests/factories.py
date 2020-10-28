@@ -2,7 +2,7 @@ import factory
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 
-from ..models import PoolTarget
+from ..models import PoolTarget, Target
 
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
@@ -26,3 +26,8 @@ class TargetFactory(factory.django.DjangoModelFactory):
     tasking = 'test'
     target_description = 'test'
     active = True
+
+class AssignedTargetFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Target
+    

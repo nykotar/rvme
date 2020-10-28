@@ -2,7 +2,7 @@ import factory
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 
-from ..models import PoolTarget, Target
+from ..models import PoolTarget, Target, PersonalTarget
 
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
@@ -31,3 +31,6 @@ class AssignedTargetFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Target
     
+class PersonalTargetFactory(factory.django.DjangoModelFactory):
+    class Model:
+        model = PersonalTarget

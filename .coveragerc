@@ -7,4 +7,5 @@ omit =
     */migrations/*
     manage.py
     rvme/wsgi.py
+    rvme/asgi.py
     */tests/*

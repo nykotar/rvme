@@ -9,7 +9,7 @@ from captcha.client import RecaptchaResponse
 from unittest.mock import patch
 
 from . import factories
-from ..models import Target
+from ..models import Target, PersonalTarget
 
 #from: http://blog.cynthiakiser.com/blog/2016/06/26/testing-file-uploads-in-django/
 def create_image(storage, filename, size=(100, 100), image_mode='RGB', image_format='JPEG'):
@@ -135,3 +135,79 @@ class TestContributeViews(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.redirect_chain[0][0], '/pool/thanks/')
     
+class TestPersonalTargetViews(TestCase):
+
+    def setUp(self):
+        self.user = factories.UserFactory()
+
+    def test_anonymous_user_cant_access_personal_targets(self):
+        personal_targets_url = reverse('pool:personal_targets')
+        response = self.client.get(personal_targets_url, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.redirect_chain[0][0],
+                         settings.LOGIN_URL + '?next=' + personal_targets_url)        
+    
+    def test_logged_user_can_access_personal_targets(self):
+        self.client.login(username=self.user.username, password='test123')
+        personal_targets_url = reverse('pool:personal_targets')
+        response = self.client.get(personal_targets_url)
+        self.assertEqual(response.status_code, 200)    
+
+    def test_can_create_personal_target(self):
+        self.client.login(username=self.user.username, password='test123')
+        new_personal_targets_url = reverse('pool:new_personal_target')
+        response = self.client.post(new_personal_targets_url, {'tasking':'Test tasking.'}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.redirect_chain[0][0], reverse('pool:personal_targets'))
+        self.assertGreater(PersonalTarget.objects.filter(user=self.user).count(), 0)
+        personal_target = PersonalTarget.objects.filter(user=self.user).get()
+        self.assertNotEqual('Test tasking.', personal_target.tasking, 'The tasking was not encrypted!')
+
+
+    def test_can_get_personal_target(self):
+        self.client.login(username=self.user.username, password='test123')
+        new_personal_targets_url = reverse('pool:new_personal_target')
+        response = self.client.post(new_personal_targets_url, {'tasking':'Test tasking.'}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.redirect_chain[0][0], reverse('pool:personal_targets'))
+        response = self.client.post(reverse('pool:personal_targets'), follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertRegex(response.redirect_chain[0][0], r'/pool/personalTarget/*/')
+
+    def test_can_reveal_personal_target(self):
+        self.client.login(username=self.user.username, password='test123')
+        factories.PersonalTarget(user=self.user,
+            active=True,
+            tid='1234-4321',
+            tasking='Z0FBQUFBQmZtTk5ERWN0TTYyY2FPcGZHTHhCeVJuNXpCd29jZi1rZ2JmVGoweEFfck9LcFBTR1RjeDN3VUxnQU5KTjFGZzNqSUVaM3lFN2tIckRVeEZDbGxpeUFNb3pZZzNqVkk3OGdWcGpvSllwaFpjMXVyZGc9'
+            ).save()
+        response = self.client.post(reverse('pool:reveal_personal_target', kwargs={'tid':'1234-4321'}), follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertRegex(response.redirect_chain[0][0], r'/pool/personalTarget/*/')
+        self.assertTrue(PersonalTarget.objects.filter(user=self.user).get().revealed)
+
+    def test_can_conclude_personal_target(self):
+        self.client.login(username=self.user.username, password='test123')
+        factories.PersonalTarget(user=self.user,
+            active=True,
+            tid='1234-4321',
+            tasking='Z0FBQUFBQmZtTk5ERWN0TTYyY2FPcGZHTHhCeVJuNXpCd29jZi1rZ2JmVGoweEFfck9LcFBTR1RjeDN3VUxnQU5KTjFGZzNqSUVaM3lFN2tIckRVeEZDbGxpeUFNb3pZZzNqVkk3OGdWcGpvSllwaFpjMXVyZGc9',
+            revealed=True).save()
+        response = self.client.get(reverse('pool:conclude_personal_target', kwargs={'tid':'1234-4321'}), follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.redirect_chain[0][0], reverse('pool:personal_targets'))
+        self.assertEqual(PersonalTarget.objects.count(), 0, 'Personal target was not removed from the db after conclusion!')
+
+    def test_can_return_personal_target(self):
+        self.client.login(username=self.user.username, password='test123')
+        factories.PersonalTarget(user=self.user,
+            active=True,
+            tid='1234-4321',
+            tasking='',
+            revealed=True).save()
+        response = self.client.get(reverse('pool:return_personal_target', kwargs={'tid':'1234-4321'}), follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.redirect_chain[0][0], reverse('pool:personal_targets'))
+        self.assertEqual(PersonalTarget.objects.count(), 1)
+        self.assertFalse(PersonalTarget.objects.filter(user=self.user).get().active)
+        self.assertFalse(PersonalTarget.objects.filter(user=self.user).get().revealed)

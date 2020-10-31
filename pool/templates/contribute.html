@@ -44,6 +44,7 @@
             {{ form.captcha.errors }}
             {{ form.captcha }}
             {{ form.non_field_errors }}
+            <small>By submitting a target you agree to the <a class="text-dark" href="{% url 'terms' %}" target="blank">terms and conditions</a>.</small><br/>
             <button type="submit" class="btn btn-dark mt-2">Submit</button>
         </form>
       </div>

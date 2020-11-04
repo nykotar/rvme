@@ -1,6 +1,12 @@
 {% extends "base_main.html" %}
 {% load static %}
 
+{% block metatags %}
+<meta property="og:title" content="{{target.target_id}} - RV Me">
+<meta property="og:description" content="{{ target.pool_target.target_description }}">
+<meta property="og:image" content="https://rvme.app{{ target.pool_target.feedback_img.url }}">
+<meta property="og:url" content="https://rvme.app">
+{% endblock %}
 {% block title %}{{ target.target_id }}{% endblock %}
 {% block content %}
   {% if not target.revealed %}

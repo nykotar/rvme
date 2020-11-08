@@ -156,3 +156,8 @@
 .errorlist li{
   color: #dc3545!important;
 }
+
+.jumbotron {
+  background-image: url("../img/header_350.png");
+  background-size: cover;
+}

@@ -7,40 +7,42 @@
   {% if targets %}
   <h1 class="mt-4 mb-4">Viewed Targets</h1>
   <div class="form-group">
-    <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#resetViewedTargetsModal">
+    <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#resetViewedTargetsModal">
       Reset
     </button>
   </div>
-  <table class="table table-hover table-responsive">
-    <thead>
-      <tr>
-        <th scope="col">Target Id</th>
-        <th scope="col">Category</th>
-        <th scope="col">Type</th>
-        <th scope="col">Assigned</th>
-        <th scope="col">Revealed</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for target in targets %}
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
         <tr>
-          <th scope="row"><a href="{% url 'pool:target_detail' target.target_id %}">{{ target.target_id }}</a></th>
-          {% if target.revealed %}
-            <td>{{ target.pool_target.category|title }}</td>
-          {% else %}
-            <td>?</td>
-          {% endif %}  
-          {% if target.is_precog %}
-            <td><span class="badge badge-info">Precog</span></td>
-          {% else %}
-            <td><span class="badge badge-light">Normal</span></td>
-          {% endif %}
-          <td>{{ target.created|date:"Y/m/d" }}</td>
-          <td>{{ target.revealed|yesno|title }}</td>
+          <th scope="col">Target Id</th>
+          <th scope="col">Category</th>
+          <th scope="col">Type</th>
+          <th scope="col">Assigned</th>
+          <th scope="col">Revealed</th>
         </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        {% for target in targets %}
+          <tr>
+            <th scope="row"><a href="{% url 'pool:target_detail' target.target_id %}" class="text-decoration-none">{{ target.target_id }}</a></th>
+            {% if target.revealed %}
+              <td>{{ target.pool_target.category|title }}</td>
+            {% else %}
+              <td>?</td>
+            {% endif %}  
+            {% if target.is_precog %}
+              <td><span class="badge bg-info">Precog</span></td>
+            {% else %}
+              <td><span class="badge bg-light text-dark">Normal</span></td>
+            {% endif %}
+            <td>{{ target.created|date:"Y/m/d" }}</td>
+            <td>{{ target.revealed|yesno|title }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
     {% if is_paginated %}
       {% include "components/pagination.html" %}
     {% endif %}
@@ -56,7 +58,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="resetViewedTargetsLabel">Reset Viewed Targets</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -66,7 +68,7 @@
         <p>Are you sure you want to reset your viewed targets? This action cannot be undone.</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         <button type="submit" class="btn btn-danger">I'm sure</button>
       </div>
     </form>

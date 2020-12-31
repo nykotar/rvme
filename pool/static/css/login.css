@@ -21,6 +21,8 @@
 @media screen and (max-width: 450px) {
     .login-form{
         margin-top: 10%;
+        padding-left: 15px;
+        padding-right: 15px;
     }
 
     .register-form{
@@ -43,6 +45,8 @@
 
     .login-form{
         margin-top: 50%;
+        padding-left: 15px;
+        padding-right: 15px;
     }
 
 }

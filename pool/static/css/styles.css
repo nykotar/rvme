@@ -160,4 +160,11 @@
 .jumbotron {
   background-image: url("../img/header_350.png");
   background-size: cover;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 576px) {
+  .jumbotron {
+    padding: 4rem 2rem;
+  }
 }

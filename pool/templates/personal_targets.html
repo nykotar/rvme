@@ -22,7 +22,7 @@
   <div class="container mt-4">
     <h1 class="mt-4 mb-4">Personal Targets</h1>
     <div class="form-group">
-      <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#newPersonalTargetModal">
+      <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#newPersonalTargetModal">
         New Target
       </button>
     </div>
@@ -48,7 +48,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="newPersonalTargetModalTitle">New Personal Target</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-bs-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -60,7 +60,7 @@
             <small class="text-muted">Personal targets cannot be edited after added to the pool. The tasking is encrypted in the database.</small>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-dark">Save</button>
           </div>
         </form>

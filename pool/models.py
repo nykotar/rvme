@@ -15,6 +15,12 @@ class Submission(models.Model):
         ('OTHER', 'Other')
     )
 
+    LEVELS = (
+        ('BEGINNER', 'Beginner'),
+        ('INTERMEDIATE', ' Intermediate'),
+        ('ADVANCED', 'Advanced')
+    )
+
     submitted_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='uploader')
     submission_date = models.DateTimeField(auto_now_add=True)
     moderated = models.BooleanField(default=False)
@@ -22,7 +28,8 @@ class Submission(models.Model):
     moderated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='moderator')
     approved = models.BooleanField(default=False)
     rejection_reason = models.CharField(max_length=200, blank=True, null=True)
-    category = models.CharField(max_length=12, choices=CATEGORIES, null=False, blank=False)
+    category = models.CharField(max_length=12, choices=CATEGORIES, null=True, blank=True)
+    level = models.CharField(max_length=12, choices=LEVELS, null=False, blank=False, default='ADVANCED')
     tasking = models.TextField(null=False, blank=False)
     target_description = models.CharField(max_length=255, null=False, blank=False)
     additional_feedback = models.TextField(blank=True, null=True)
@@ -33,6 +40,7 @@ class Submission(models.Model):
     def save(self, *args, **kwargs):
         if self.id:
             self.pooltarget.category = self.category
+            self.pooltarget.level = self.level
             self.pooltarget.save()
         super(Submission, self).save(*args, **kwargs)
 
@@ -56,7 +64,8 @@ class Submission(models.Model):
 
 class PoolTarget(models.Model):
 
-    category = models.CharField(max_length=12, null=False, blank=False)
+    category = models.CharField(max_length=12, null=True, blank=True)
+    level = models.CharField(max_length=12, null=False, blank=False, default='ADVANCED')
     feedback_img = models.ImageField()
     feedback_img_phash = models.CharField(max_length=16, unique=True)
     feedback_img_chash = models.CharField(max_length=16)
@@ -81,6 +90,7 @@ class Target(models.Model):
     is_precog = models.BooleanField()
     inc_submitted = models.BooleanField(default=False)
     allowed_categories = models.CharField(max_length=64)
+    level = models.CharField(max_length=12, default='ADVANCED')
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

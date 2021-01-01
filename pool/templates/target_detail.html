@@ -11,10 +11,10 @@
 {% block content %}
   {% if not target.revealed %}
     <div class="container-fluid">
-      <div class="row justify-content-center align-items-center" style="margin-top: 15%">
+      <div class="d-flex justify-content-center align-items-center" style="margin-top: 15%">
         <h1 id="tid"><a class="btn btn-outline-dark btn-xlg" href="{% url 'pool:reveal_target' target.target_id %}">{{ target.target_id }}</a></h1>
       </div>
-      <div class="row justify-content-center align-items center">
+      <div class="d-flex justify-content-center align-items center">
         <small>Click to reveal the target. You can always revisit this page in the Viewed Targets section.</small>
       </div>
     </div>

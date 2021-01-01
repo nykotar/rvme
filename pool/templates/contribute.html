@@ -8,36 +8,33 @@
       <div class="col col-xl-6 col-lg-7 col-md-8">
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="form-group col-md-6">
-              <label for="category">Category *</label>
-              {{ form.category.errors }}
-              <select id="category" name="category" class="form-control" required>
-                <option disabled selected>Select a Category</option>
-                <option value="EVENT">Event</option>
-                <option value="LIFEFORM">Lifeform</option>
-                <option value="LOCATION">Location</option>
-                <option value="OBJECT">Object</option>
-                <option value="PERSON">Person</option>
-                <option value="OTHER">Other</option>
+            <div class="mb-3 col-md-6">
+              <label for="level" class="form-label">Difficulty Level *</label>
+              {{ form.level.errors }}
+              <select id="level" name="level" class="form-select" required>
+                <option disabled selected>Select a Level</option>
+                <option value="BEGINNER">Beginner</option>
+                <option value="INTERMEDIATE">Intermediate</option>
+                <option value="ADVANCED">Advanced</option>
               </select>
             </div>
-            <div class="form-group col-md-10">
-              <label for="description">Target Description *</label>
+            <div class="mb-3 col-md-10">
+              <label for="description" class="form-label">Target Description *</label>
               {{ form.target_description.errors }}
               <input type="text" class="form-control" name="target_description" id="target_description" placeholder="What/where/who the target is." maxlength="255" required></input>
             </div>
-            <div class="form-group col-md-10">
-              <label for="tasking">Tasking *</label>
+            <div class="mb-3 col-md-10">
+              <label for="tasking" class="form-label">Tasking *</label>
               {{ form.tasking.errors }}
               <textarea class="form-control" rows="3" name="tasking" id="tasking" required>Perceive what is in the photo, from the perspective the photo was taken, at the time the photo was taken.</textarea>
             </div>
-            <div class="form-group col-md-10">
-              <label for="additional_feedback">Additional Feedback</label>
+            <div class="mb-3 col-md-10">
+              <label for="additional_feedback" class="form-label">Additional Feedback</label>
               {{ form.additional_feedback.errors }}
               <textarea class="form-control" rows="3" name="additional_feedback" id="additional_feedback" placeholder="More information about the target (optional)."></textarea>
             </div>
-            <div class="form-group col-md-8">
-              <label for="feedback_image">Feedback Image *</label>
+            <div class="mb-3 col-md-8">
+              <label for="feedback_image" class="form-label">Feedback Image *</label>
               {{ form.feedback_image.errors }}
               <input type="file" accept="image/*" class="form-control-file" id="feedback_image" name="feedback_image" required>
             </div>
@@ -63,20 +60,6 @@
       <p>For example, a picture of a plain mound of dirt wouldn't be very distinct or interesting for most people, but an ancient burial mound with stone carvings might be.</p>
       <p>Sometimes the only reward for remote viewing is an "Aha" moment when the feedback is received. It is nice, if not necessary, for images to have a certain special something, so that they are more likely to provide that moment.</p>
       <p>Rarely do two people agree on the topic of how or why remote viewing might work, but it appears that impressions come from processes that, while subconscious, are as human as we are. Photos will be selected that appeal to our conscious, human sense of interest.</p>
-    <h3>Categories</h3>
-      <p>There are six categories of targets:</p>
-      <h5>Event</h5>
-        <p>For events of any kind.</p>
-      <h5>Lifeform</h5>
-        <p>For animals, plants or other lifeforms.</p>
-      <h5>Location</h5>
-        <p>For places, tourist attractions, etc.</p>
-      <h5>Object</h5>
-        <p>For objects.</p>
-      <h5>Person</h5>
-        <p>For people. Public persons, only.</p>
-      <h5>Other</h5>
-        <p>For anything that doesn't fit one of the five categories.</p>
     <h3>Feedback Image</h3>
       <p>This is the central part of the target, it's very important to choose an appropriate image. The target must be visible and at the center of the picture and there must be no CGI elements (i.e. filters, people, objects, etc).</p>
     <h3>Target Description</h3>

@@ -5,67 +5,43 @@
   <div class="container mt-4">
     <h1 class="mt-4 mb-4">Practice</h1>
     <div class="row">
-      <div class="col col-xl-5 col-lg-5 col-md-6 col-sm-6">
+      <div class="col col-xl-4 col-lg-4 col-md-5 col-sm-5">
         <form method="POST">
           <div class="card border-dark">
             <div class="card-body">
               {% csrf_token %}
               <div class="row">
                 <div class="col">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="event" id="event" checked>
-                    <label class="form-check-label" for="event">
-                      Event
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="lifeform" id="lifeform" checked>
-                    <label class="form-check-label" for="lifeform">
-                      Lifeform
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="location" id="location" checked>
-                    <label class="form-check-label" for="location">
-                      Location
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="object" id="object" checked>
-                    <label class="form-check-label" for="object">
-                      Object
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="person" id="person" checked>
-                    <label class="form-check-label" for="person">
-                      Person <i class="far fa-question-circle" data-toggle="tooltip" data-placement="top" title="Tasking may include description of events, thoughts, actions, surroundings, emotions, physical characteristics, and other aspects of a person's lifetime."></i>
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="other" id="other" checked>
-                    <label class="form-check-label" for="other">
-                      Other
-                    </label>
-                  </div>
-                </div>
-                <div class="col">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="precognitive" id="precognitive">
-                    <label class="form-check-label text-info" for="precognitive">
-                      Precognitive <i class="far fa-question-circle" data-toggle="tooltip" data-placement="top" title="The target is not selected until you choose to reveal it."></i>
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="incsubmitted" id="incsubmitted">
-                    <label class="form-check-label" for="incsubmitted">
-                      Submitted targets <i class="far fa-question-circle" data-toggle="tooltip" data-placement="top" title="You may get a target that you submitted."></i>
-                    </label>
+                  <div class="btn-group" role="group" aria-label="Level selection">
+                    <input type="radio" class="btn-check" name="level" id="lvl1" autocomplete="off" value="BEGINNER" checked>
+                    <label class="btn btn-outline-secondary" for="lvl1">Beginner</label>
+                  
+                    <input type="radio" class="btn-check" name="level" id="lvl2" autocomplete="off" value="INTERMEDIATE">
+                    <label class="btn btn-outline-secondary" for="lvl2">Intermediate</label>
+                  
+                    <input type="radio" class="btn-check" name="level" id="lvl3" autocomplete="off" value="ADVANCED">
+                    <label class="btn btn-outline-secondary" for="lvl3">Advanced</label>
                   </div>
                 </div>
               </div>
-              {{ form.non_field_errors }}
+              <div class="row mt-3">
+                  <div class="col">
+                    <div class="form-switch">
+                      <input class="form-check-input" type="checkbox" name="precognitive" id="precognitive">
+                      <label class="form-check-label text-info" for="precognitive">
+                        Precognitive <i class="far fa-question-circle" data-toggle="tooltip" data-placement="top" title="The target is not selected until you choose to reveal it."></i>
+                      </label>
+                    </div>
+                    <div class="form-switch">
+                      <input class="form-check-input" type="checkbox" name="incsubmitted" id="incsubmitted">
+                      <label class="form-check-label" for="incsubmitted">
+                        Submitted targets <i class="far fa-question-circle" data-toggle="tooltip" data-placement="top" title="You may get a target that you submitted."></i>
+                      </label>
+                    </div>
+                  </div>
+              </div>
               <br/>
+              {{ form.non_field_errors }}
               <button type="submit" class="btn btn-dark">Get target</button>
             </div>
           </div>

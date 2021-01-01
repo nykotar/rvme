@@ -9,11 +9,11 @@
     <div class="sidenav">
          <div class="login-main-text">
             <h1><a class="text-decoration-none text-dark" href="{% url 'index' %}">RV Me <sup class="text-muted h5">BETA</sup></a></h1><h2> Login</h2><br/>
-            <blockquote class="blockquote">
+            <figure>
                {% autoescape off %}
                   {% random_quote %}
                {% endautoescape %}
-            </blockquote>
+            </figure>
          </div>
       </div>
       <div class="main">
@@ -21,12 +21,12 @@
             <div class="login-form">
                <form method="POST" action="{% url 'login' %}">
                   {% csrf_token %}
-                  <div class="form-group">
-                     <label>Username</label>
+                  <div class="mb-3">
+                     <label for="username" class="form-label">Username</label>
                      <input type="text" class="form-control" name="username" autocomplete="username" placeholder="Username" autofocus required>
                   </div>
-                  <div class="form-group">
-                     <label>Password</label>
+                  <div class="mb-3">
+                     <label for="password" class="form-label">Password</label>
                      <input type="password" class="form-control" name="password" placeholder="Password" required>
                      <small class="form-text text-muted">Don't have an account? <a class="text-black-50" href="{% url 'signup' %}">Sign up</a></small>
                   </div>

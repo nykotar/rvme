@@ -40,13 +40,14 @@ class GetTargetView(LoginRequiredMixin, FormView):
 
     def form_valid(self, form):
         if not form.cleaned_data['precognitive']:
-            all_pooltargets = PoolTarget.objects.filter(category__in=form.cleaned_data['selected_categories'], active=True)
-            done_targets = Target.objects.filter(pool_target__category__in=form.cleaned_data['selected_categories'],
+            all_pooltargets = PoolTarget.objects.filter(level=form.cleaned_data['level'], active=True)
+            done_targets = Target.objects.filter(pool_target__level=form.cleaned_data['level'],
                                                 user=self.request.user).values_list('pool_target', flat=True)
             available_targets = all_pooltargets.exclude(pk__in=done_targets)
             if not form.cleaned_data['incsubmitted']:
                 available_targets = available_targets.exclude(submission__submitted_by=self.request.user)
             count = available_targets.count()
+
             if count > 0:
                 sel_target = available_targets[randint(0, count - 1)]
                 
@@ -62,12 +63,13 @@ class GetTargetView(LoginRequiredMixin, FormView):
                 target.target_uid = shortuuid.uuid()
                 target.pool_target = sel_target
                 target.is_precog = False
-                target.allowed_categories = ','.join(form.cleaned_data['selected_categories'])
+                target.level = form.cleaned_data['level']
+                target.allowed_categories = ''
                 target.save()
 
                 self.success_url += tid
             else:
-                form.add_error(None, ValidationError('There are no more available targets for the selected categories.'))
+                form.add_error(None, ValidationError('There are no more available targets for you in the selected level.'))
                 return self.form_invalid(form)
         else:
             tid = gen_tid()
@@ -82,7 +84,8 @@ class GetTargetView(LoginRequiredMixin, FormView):
             target.target_uid = shortuuid.uuid()
             target.is_precog = True
             target.inc_submitted = form.cleaned_data['incsubmitted']
-            target.allowed_categories = ','.join(form.cleaned_data['selected_categories'])   
+            target.allowed_categories = ''
+            target.level = form.cleaned_data['level']  
             target.save()
 
             self.success_url += tid
@@ -104,7 +107,7 @@ def reveal_target(request, tid):
     target = get_object_or_404(Target, target_id=tid, user=request.user)
 
     if target.is_precog:
-        available_targets = PoolTarget.objects.filter(category__in=target.allowed_categories.split(','), active=True)
+        available_targets = PoolTarget.objects.filter(level=target.level, active=True)
         if not target.inc_submitted:
             available_targets = available_targets.exclude(submission__submitted_by=request.user)
         count = available_targets.count()
@@ -150,7 +153,7 @@ class UploadTargetView(LoginRequiredMixin, FormView):
 
             submission = Submission()
             submission.submitted_by = self.request.user
-            submission.category = form.cleaned_data['category']
+            submission.level = form.cleaned_data['level']
             submission.target_description = form.cleaned_data['target_description']
             submission.tasking = form.cleaned_data['tasking']
             if form.cleaned_data['additional_feedback']:
@@ -159,7 +162,7 @@ class UploadTargetView(LoginRequiredMixin, FormView):
             
 
             upload = PoolTarget()
-            upload.category = form.cleaned_data['category']
+            upload.level = form.cleaned_data['level']
             upload.target_description = form.cleaned_data['target_description']
             upload.tasking = form.cleaned_data['tasking']
             if form.cleaned_data['additional_feedback']:

@@ -42,20 +42,20 @@ class TestPracticeViews(TestCase):
         self.practice_url = reverse('pool:index')
 
     def test_anonymous_user_cant_get_target(self):
-        response = self.client.post(self.practice_url, {'event':True}, follow=True)
+        response = self.client.post(self.practice_url, {'level':'BEGINNER'}, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.redirect_chain[0][0],
                          settings.LOGIN_URL + '?next=' + self.practice_url)
     
     def test_logged_user_can_get_target(self):
         self.client.login(username=self.user.username, password='test123')
-        response = self.client.post(self.practice_url, {'event':True})
+        response = self.client.post(self.practice_url, {'level':'BEGINNER'})
         self.assertEqual(response.status_code, 200)
 
     def test_can_get_and_reveal_target(self):
         factories.TargetFactory()
         self.client.login(username=self.user.username, password='test123')
-        response = self.client.post(self.practice_url, {'other':True}, follow=True)
+        response = self.client.post(self.practice_url, {'level':'BEGINNER'}, follow=True)
         self.assertEqual(response.status_code, 200)
         target_id = response.redirect_chain[0][0][-9:]
         reveal_url = reverse('pool:reveal_target', kwargs={'tid': target_id})
@@ -67,7 +67,7 @@ class TestPracticeViews(TestCase):
     def test_can_get_and_reveal_precog_target(self):
         factories.TargetFactory()
         self.client.login(username=self.user.username, password='test123')
-        response = self.client.post(self.practice_url, {'other':True, 'precognitive':True}, follow=True)
+        response = self.client.post(self.practice_url, {'level':'BEGINNER', 'precognitive':True}, follow=True)
         self.assertEqual(response.status_code, 200)
         target_id = response.redirect_chain[0][0][-9:]
         target = Target.objects.get(user=self.user, target_id=target_id)
@@ -81,7 +81,7 @@ class TestPracticeViews(TestCase):
     def test_can_access_target_public_url(self):
         factories.TargetFactory()
         self.client.login(username=self.user.username, password='test123')
-        response = self.client.post(self.practice_url, {'other':True}, follow=True)
+        response = self.client.post(self.practice_url, {'level':'BEGINNER'}, follow=True)
         self.assertEqual(response.status_code, 200)
         target_id = response.redirect_chain[0][0][-9:]
         target = Target.objects.get(user=self.user, target_id=target_id)
@@ -107,7 +107,8 @@ class TestPracticeViews(TestCase):
          target_uid='uuid',
          target_id='1234-4321',
          is_precog=True,
-         allowed_categories='OTHER').save()
+         allowed_categories='',
+         level='BEGINNER').save()
         self.assertGreater(Target.objects.filter(user=self.user).count(), 0)
         reset_viewed_targets_url = reverse('pool:reset_viewed_targets')
         response = self.client.post(reset_viewed_targets_url, follow=True)
@@ -139,7 +140,7 @@ class TestContributeViews(TestCase):
         feedback_file = SimpleUploadedFile('feedback.jpg', feedback_img.getvalue())
         mocked_submit.return_value = RecaptchaResponse(is_valid=True)
         response = self.client.post(self.contribute_url,
-         {'category': 'OTHER',
+         {'level': 'BEGINNER',
           'target_description': 'This is a test',
           'additional_feedback': 'Yes.. just a test.',
           'tasking': 'This is a test',

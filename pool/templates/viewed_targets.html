@@ -16,7 +16,7 @@
       <thead>
         <tr>
           <th scope="col">Target Id</th>
-          <th scope="col">Category</th>
+          <th scope="col">Difficulty</th>
           <th scope="col">Type</th>
           <th scope="col">Assigned</th>
           <th scope="col">Revealed</th>
@@ -27,7 +27,7 @@
           <tr>
             <th scope="row"><a href="{% url 'pool:target_detail' target.target_id %}" class="text-decoration-none">{{ target.target_id }}</a></th>
             {% if target.revealed %}
-              <td>{{ target.pool_target.category|title }}</td>
+              <td>{{ target.pool_target.level|title }}</td>
             {% else %}
               <td>?</td>
             {% endif %}  

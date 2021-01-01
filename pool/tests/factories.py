@@ -20,6 +20,7 @@ class TargetFactory(factory.django.DjangoModelFactory):
         model = PoolTarget
     
     category = 'OTHER'
+    level = 'BEGINNER'
     feedback_img = factory.django.ImageField(color='blue')
     feedback_img_phash = 'aaaaaaaaaaaaaaaa'
     feedback_img_chash = 'aaaaaaaaaaaaaaaa'

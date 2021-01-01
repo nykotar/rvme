@@ -12,6 +12,6 @@ quotes = (('Work practice targets until the ego has been dismantled, beaten, and
 @register.simple_tag
 def random_quote():
     sel_quote = quotes[randint(0, len(quotes)-1)]
-    quote = f'<p class="mb-0">{sel_quote[0]}</p>'
-    author = f'<footer class="blockquote-footer">{sel_quote[1]}</footer>'
+    quote = f'<blockquote class="blockquote">{sel_quote[0]}</blockquote>'
+    author = f'<figcaption class="blockquote-footer">{sel_quote[1]}</figcaption>'
     return quote + author

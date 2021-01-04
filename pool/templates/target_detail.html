@@ -32,11 +32,12 @@
       </div>
       <div class="container mt-4 mb-4">
         <p class="card-text">{{ target.pool_target.additional_feedback|default_if_none:""|urlize }}</p>
-        <p class="text-muted">Category: {{ target.pool_target.category|title }}</p>
-        <div class="input-group mt-4 mb-4 col-sm-4 float-right row">
-          <label class="col-form-label mr-2" for="share-link">Share</label>
-          <input type="text" id="share-link" class="form-control" value="{{request.scheme}}://{{request.META.HTTP_HOST}}{% url 'pool:shared_target_detail' target.target_uid %}" readonly>
-          <div class="input-group-append">
+      </div>
+      <div class="row justify-content-start">
+        <div class="col-3">
+          <div class="input-group mt-4 mb-4">
+            <label class="col-form-label p-2" for="share-link">Share</label>
+            <input type="text" id="share-link" aria-label="Share link" class="form-control" value="{{request.scheme}}://{{request.META.HTTP_HOST}}{% url 'pool:shared_target_detail' target.target_uid %}" readonly>
             <button class="btn btn-outline-secondary" type="button" data-clipboard-target="#share-link">Copy</button>
           </div>
         </div>

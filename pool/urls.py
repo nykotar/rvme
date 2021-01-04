@@ -15,7 +15,7 @@ urlpatterns = [
     path('personalTargets/', views.PersonalTargetsView.as_view(), name="personal_targets"),
     path('personalTargets/new/', views.NewPersonalTargetView.as_view(), name="new_personal_target"),
     path('personalTarget/<str:tid>/', views.personal_target_detail, name='personal_target_detail'),
-    path('personalTarget/<str:tid>/reveal/', views.reveal_personal_target, name='reveal_personal_target'),
+    path('personalTarget/<str:tid>/reveal/', views.RevealPersonalTargetView.as_view(), name='reveal_personal_target'),
     path('personalTarget/<str:tid>/conclude/', views.conclude_personal_target, name='conclude_personal_target'),
     path('personalTarget/<str:tid>/return/', views.return_personal_target, name='return_personal_target'),
 ]

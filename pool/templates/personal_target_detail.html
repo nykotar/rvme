@@ -5,7 +5,10 @@
   {% if not target.revealed %}
     <div class="container-fluid">
       <div class="d-flex justify-content-center align-items-center" style="margin-top: 15%">
-        <h1 id="tid"><a class="btn btn-outline-dark btn-xlg" href="{% url 'pool:reveal_personal_target' target.tid %}">{{ target.tid }}</a></h1>
+        <form action="{% url 'pool:reveal_personal_target' target.tid %}" method="POST">
+          {% csrf_token %}
+          <button type="submit" id="tid" class="btn btn-outline-dark btn-xlg">{{ target.tid }}</button>
+        </form>
       </div>
     </div>
   {% else %}

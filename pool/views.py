@@ -244,12 +244,14 @@ def personal_target_detail(request, tid):
     target = get_object_or_404(PersonalTarget, tid=tid, user=request.user)
     return render(request, 'personal_target_detail.html', {'target':target})
 
-@login_required
-def reveal_personal_target(request, tid):
-    target = get_object_or_404(PersonalTarget, tid=tid, user=request.user)
-    target.revealed = True
-    target.save()
-    return HttpResponseRedirect(reverse('pool:personal_target_detail', kwargs={'tid':tid}))
+class RevealPersonalTargetView(LoginRequiredMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        tid = kwargs['tid']
+        target = get_object_or_404(PersonalTarget, tid=tid, user=request.user)
+        target.revealed = True
+        target.save()
+        return HttpResponseRedirect(reverse('pool:personal_target_detail', kwargs={'tid':tid}))
 
 @login_required
 def conclude_personal_target(request, tid):

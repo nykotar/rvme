@@ -12,9 +12,12 @@
   {% if not target.revealed %}
     <div class="container-fluid">
       <div class="d-flex justify-content-center align-items-center" style="margin-top: 15%">
-        <h1 id="tid"><a class="btn btn-outline-dark btn-xlg" href="{% url 'pool:reveal_target' target.target_id %}">{{ target.target_id }}</a></h1>
+        <form action="{% url 'pool:reveal_target' target.target_id %}" method="POST">
+          {% csrf_token %}
+          <button id="tid" type="submit" class="btn btn-outline-dark btn-xlg">{{ target.target_id }}</button>
+        </form>
       </div>
-      <div class="d-flex justify-content-center align-items center">
+      <div class="d-flex justify-content-center align-items center mt-3">
         <small>Click to reveal the target. You can always revisit this page in the Viewed Targets section.</small>
       </div>
     </div>
@@ -35,7 +38,7 @@
       </div>
       <div class="row justify-content-start">
         <div class="col-3">
-          <div class="input-group mt-4 mb-4">
+          <div class="input-group mt-3 mb-4">
             <label class="col-form-label p-2" for="share-link">Share</label>
             <input type="text" id="share-link" aria-label="Share link" class="form-control" value="{{request.scheme}}://{{request.META.HTTP_HOST}}{% url 'pool:shared_target_detail' target.target_uid %}" readonly>
             <button class="btn btn-outline-secondary" type="button" data-clipboard-target="#share-link">Copy</button>

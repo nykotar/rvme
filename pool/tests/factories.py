@@ -23,7 +23,6 @@ class TargetFactory(factory.django.DjangoModelFactory):
     level = 'BEGINNER'
     feedback_img = factory.django.ImageField(color='blue')
     feedback_img_phash = 'aaaaaaaaaaaaaaaa'
-    feedback_img_chash = 'aaaaaaaaaaaaaaaa'
     tasking = 'test'
     target_description = 'test'
     active = True

@@ -59,7 +59,7 @@ class TestPracticeViews(TestCase):
         self.assertEqual(response.status_code, 200)
         target_id = response.redirect_chain[0][0][-9:]
         reveal_url = reverse('pool:reveal_target', kwargs={'tid': target_id})
-        response = self.client.get(reveal_url, follow=True)
+        response = self.client.post(reveal_url, {}, follow=True)
         self.assertEqual(response.status_code, 200)
         target = Target.objects.get(user=self.user, target_id=target_id)
         self.assertTrue(target.revealed)
@@ -73,7 +73,7 @@ class TestPracticeViews(TestCase):
         target = Target.objects.get(user=self.user, target_id=target_id)
         self.assertIsNone(target.pool_target, msg='A pooltarget was assigned to a precognitive target ahead of time!')
         reveal_url = reverse('pool:reveal_target', kwargs={'tid': target_id})
-        response = self.client.get(reveal_url, follow=True)
+        response = self.client.post(reveal_url, {}, follow=True)
         self.assertEqual(response.status_code, 200)
         target = Target.objects.get(user=self.user, target_id=target_id)
         self.assertTrue(target.revealed)

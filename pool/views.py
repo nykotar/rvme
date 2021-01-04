@@ -101,24 +101,25 @@ def target_detail_public(request, uuid):
     target = get_object_or_404(Target, target_uid=uuid)
     return render(request, 'target_detail.html', {'target':target})
 
-@login_required
-def reveal_target(request, tid):
+class RevealTargetView(LoginRequiredMixin, View):
 
-    target = get_object_or_404(Target, target_id=tid, user=request.user)
+    def post(self, request, *args, **kwargs):
+        tid = kwargs['tid']
+        target = get_object_or_404(Target, target_id=tid, user=request.user)
 
-    if target.is_precog:
-        available_targets = PoolTarget.objects.filter(level=target.level, active=True)
-        if not target.inc_submitted:
-            available_targets = available_targets.exclude(submission__submitted_by=request.user)
-        count = available_targets.count()
-        sel_target = available_targets[randint(0, count - 1)]
-        target.pool_target = sel_target
+        if target.is_precog:
+            available_targets = PoolTarget.objects.filter(level=target.level, active=True)
+            if not target.inc_submitted:
+                available_targets = available_targets.exclude(submission__submitted_by=request.user)
+            count = available_targets.count()
+            sel_target = available_targets[randint(0, count - 1)]
+            target.pool_target = sel_target
 
-    target.revealed = True
-    target.reveal_date = now()
-    target.save()
+        target.revealed = True
+        target.reveal_date = now()
+        target.save()
 
-    return HttpResponseRedirect(reverse('pool:target_detail', kwargs={'tid': tid}))
+        return HttpResponseRedirect(reverse('pool:target_detail', kwargs={'tid': tid}))
 
 '''
 ** Contribute views

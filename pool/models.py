@@ -68,7 +68,6 @@ class PoolTarget(models.Model):
     level = models.CharField(max_length=12, null=False, blank=False, default='ADVANCED')
     feedback_img = models.ImageField()
     feedback_img_phash = models.CharField(max_length=16, unique=True)
-    feedback_img_chash = models.CharField(max_length=16)
     tasking = models.TextField()
     target_description = models.CharField(max_length=255)
     additional_feedback = models.TextField(null=True, blank=True)

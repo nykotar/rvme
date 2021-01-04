@@ -168,7 +168,6 @@ class UploadTargetView(LoginRequiredMixin, FormView):
             if form.cleaned_data['additional_feedback']:
                 upload.additional_feedback = form.cleaned_data['additional_feedback']
             upload.feedback_img = form.cleaned_data['feedback_image']
-            upload.feedback_img_chash = imagehash.colorhash(image)
             upload.feedback_img_phash = phash
             upload.submission = submission
             upload.save()

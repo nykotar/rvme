@@ -101,24 +101,25 @@ def target_detail_public(request, uuid):
     target = get_object_or_404(Target, target_uid=uuid)
     return render(request, 'target_detail.html', {'target':target})
 
-@login_required
-def reveal_target(request, tid):
+class RevealTargetView(LoginRequiredMixin, View):
 
-    target = get_object_or_404(Target, target_id=tid, user=request.user)
+    def post(self, request, *args, **kwargs):
+        tid = kwargs['tid']
+        target = get_object_or_404(Target, target_id=tid, user=request.user)
 
-    if target.is_precog:
-        available_targets = PoolTarget.objects.filter(level=target.level, active=True)
-        if not target.inc_submitted:
-            available_targets = available_targets.exclude(submission__submitted_by=request.user)
-        count = available_targets.count()
-        sel_target = available_targets[randint(0, count - 1)]
-        target.pool_target = sel_target
+        if target.is_precog:
+            available_targets = PoolTarget.objects.filter(level=target.level, active=True)
+            if not target.inc_submitted:
+                available_targets = available_targets.exclude(submission__submitted_by=request.user)
+            count = available_targets.count()
+            sel_target = available_targets[randint(0, count - 1)]
+            target.pool_target = sel_target
 
-    target.revealed = True
-    target.reveal_date = now()
-    target.save()
+        target.revealed = True
+        target.reveal_date = now()
+        target.save()
 
-    return HttpResponseRedirect(reverse('pool:target_detail', kwargs={'tid': tid}))
+        return HttpResponseRedirect(reverse('pool:target_detail', kwargs={'tid': tid}))
 
 '''
 ** Contribute views
@@ -168,7 +169,6 @@ class UploadTargetView(LoginRequiredMixin, FormView):
             if form.cleaned_data['additional_feedback']:
                 upload.additional_feedback = form.cleaned_data['additional_feedback']
             upload.feedback_img = form.cleaned_data['feedback_image']
-            upload.feedback_img_chash = imagehash.colorhash(image)
             upload.feedback_img_phash = phash
             upload.submission = submission
             upload.save()
@@ -244,12 +244,14 @@ def personal_target_detail(request, tid):
     target = get_object_or_404(PersonalTarget, tid=tid, user=request.user)
     return render(request, 'personal_target_detail.html', {'target':target})
 
-@login_required
-def reveal_personal_target(request, tid):
-    target = get_object_or_404(PersonalTarget, tid=tid, user=request.user)
-    target.revealed = True
-    target.save()
-    return HttpResponseRedirect(reverse('pool:personal_target_detail', kwargs={'tid':tid}))
+class RevealPersonalTargetView(LoginRequiredMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        tid = kwargs['tid']
+        target = get_object_or_404(PersonalTarget, tid=tid, user=request.user)
+        target.revealed = True
+        target.save()
+        return HttpResponseRedirect(reverse('pool:personal_target_detail', kwargs={'tid':tid}))
 
 @login_required
 def conclude_personal_target(request, tid):

@@ -37,7 +37,7 @@
         <p class="card-text">{{ target.pool_target.additional_feedback|default_if_none:""|urlize }}</p>
       </div>
       <div class="row justify-content-start">
-        <div class="col-3">
+        <div class="col-lg-6 col-md-8 col-sm-5">
           <div class="input-group mt-3 mb-4">
             <label class="col-form-label p-2" for="share-link">Share</label>
             <input type="text" id="share-link" aria-label="Share link" class="form-control" value="{{request.scheme}}://{{request.META.HTTP_HOST}}{% url 'pool:shared_target_detail' target.target_uid %}" readonly>

@@ -5,6 +5,8 @@ from django.utils.timezone import now
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.exceptions import ValidationError
@@ -282,3 +284,23 @@ def get_range(value):
 @register.filter
 def decryptTxt(value):
     return decrypt(value)
+
+'''
+** Settings
+'''
+
+class SettingsTemplateView(LoginRequiredMixin, TemplateView):
+    template_name = 'settings.html'
+
+class ChangePasswordView(LoginRequiredMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+            return HttpResponseRedirect(reverse('pool:user_settings'))
+        else:
+            messages.error(request, 'Please correct the error below.')
+            return render(request, template_name='settings.html', context={'form':form})

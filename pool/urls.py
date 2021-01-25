@@ -18,4 +18,6 @@ urlpatterns = [
     path('personalTarget/<str:tid>/reveal/', views.RevealPersonalTargetView.as_view(), name='reveal_personal_target'),
     path('personalTarget/<str:tid>/conclude/', views.conclude_personal_target, name='conclude_personal_target'),
     path('personalTarget/<str:tid>/return/', views.return_personal_target, name='return_personal_target'),
+    path('settings/', views.SettingsTemplateView.as_view(), name="user_settings"),
+    path('settings/changePassword/', views.ChangePasswordView.as_view(), name="change_password")
 ]

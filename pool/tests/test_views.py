@@ -208,7 +208,7 @@ class TestPersonalTargetViews(TestCase):
             tid='1234-4321',
             tasking='Z0FBQUFBQmZtTk5ERWN0TTYyY2FPcGZHTHhCeVJuNXpCd29jZi1rZ2JmVGoweEFfck9LcFBTR1RjeDN3VUxnQU5KTjFGZzNqSUVaM3lFN2tIckRVeEZDbGxpeUFNb3pZZzNqVkk3OGdWcGpvSllwaFpjMXVyZGc9',
             revealed=True).save()
-        response = self.client.get(reverse('pool:conclude_personal_target', kwargs={'tid':'1234-4321'}), follow=True)
+        response = self.client.post(reverse('pool:conclude_personal_target', kwargs={'tid':'1234-4321'}), follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.redirect_chain[0][0], reverse('pool:personal_targets'))
         self.assertEqual(PersonalTarget.objects.count(), 0, 'Personal target was not removed from the db after conclusion!')

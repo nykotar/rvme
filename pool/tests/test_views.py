@@ -220,7 +220,7 @@ class TestPersonalTargetViews(TestCase):
             tid='1234-4321',
             tasking='',
             revealed=True).save()
-        response = self.client.get(reverse('pool:return_personal_target', kwargs={'tid':'1234-4321'}), follow=True)
+        response = self.client.post(reverse('pool:return_personal_target', kwargs={'tid':'1234-4321'}), follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.redirect_chain[0][0], reverse('pool:personal_targets'))
         self.assertEqual(PersonalTarget.objects.count(), 1)

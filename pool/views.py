@@ -261,12 +261,14 @@ class RevealPersonalTargetView(LoginRequiredMixin, View):
         target.save()
         return HttpResponseRedirect(reverse('pool:personal_target_detail', kwargs={'tid':tid}))
 
-@login_required
-def conclude_personal_target(request, tid):
-    target = get_object_or_404(PersonalTarget, tid=tid, user=request.user)
-    target.delete()
-    messages.success(request, 'The target was concluded and removed from the pool.')
-    return HttpResponseRedirect(reverse('pool:personal_targets'))
+class ConcludePersonalTargetView(LoginRequiredMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        tid = kwargs['tid']
+        target = get_object_or_404(PersonalTarget, tid=tid, user=request.user)
+        target.delete()
+        messages.success(request, 'The target was concluded and removed from the pool.')
+        return HttpResponseRedirect(reverse('pool:personal_targets'))
 
 @login_required
 def return_personal_target(request, tid):

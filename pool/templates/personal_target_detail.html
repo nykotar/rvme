@@ -20,9 +20,10 @@
     </div>
     <div class="container mt-5">
       <div class="form-group">
-        <a class="btn btn-sm btn-dark" href="{% url 'pool:conclude_personal_target' target.tid %}">
-          Conclude target
-        </a>
+        <form action="{% url 'pool:conclude_personal_target' target.tid %}" method="POST" class="d-inline-block">
+          {% csrf_token %}
+          <button type="submit" is="tid" class="btn btn-sm btn-dark">Conclude target</button>
+        </form>
         <a class="btn btn-sm btn-link" href="{% url 'pool:return_personal_target' target.tid %}">
           Return target to the pool
         </a>

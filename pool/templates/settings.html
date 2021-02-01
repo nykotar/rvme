@@ -1,0 +1,42 @@
+{% extends "base_main.html" %}
+
+{% block title %}Submit target{% endblock %}
+{% block content %}
+
+  {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-warning" role="alert">
+      {{ message }}
+    </div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="container">
+    <h1 class="mt-4 mb-4">Settings</h1>
+    <div class="row">
+      <div class="col col-xl-6 col-lg-7 col-md-8">
+        <h3 class="mt-4 mb-4">Old password</h3>
+        <form method="POST" action="{% url 'pool:change_password' %}">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="old_password" class="form-label">Current password</label>
+            {{ form.old_password.errors }}
+            <input type="password" class="form-control" id="old_password" name="old_password">
+          </div>
+          <div class="mb-3">
+            <label for="new_password1" class="form-label">New password</label>
+            {{ form.new_password1.errors }}
+            <input type="password" class="form-control" id="new_password1" name="new_password1">
+          </div>
+          <div class="mb-3">
+            <label for="new_password2" class="form-label">Confirm new password</label>
+            <input type="password" class="form-control" id="new_password2" name="new_password2">
+          </div>
+          {{ form.new_password2.errors }}
+          {{ form.non_field_errors }}
+          <button type="submit" class="btn btn-secondary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

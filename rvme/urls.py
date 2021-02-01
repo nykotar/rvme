@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 from django.urls import include, path
 
 from django.views.generic.base import TemplateView
@@ -30,6 +31,7 @@ admin.site.index_title = 'RVMe administration'
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
     path('pool/', include('pool.urls')),
+    path('accounts/login/', auth_views.LoginView.as_view(redirect_authenticated_user=True), name='login'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/signup/', views.SignupView.as_view(), name='signup'),
     path('terms/', TemplateView.as_view(template_name='terms.html'), name='terms'),

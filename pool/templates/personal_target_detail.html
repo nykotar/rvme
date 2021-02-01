@@ -20,12 +20,14 @@
     </div>
     <div class="container mt-5">
       <div class="form-group">
-        <a class="btn btn-sm btn-dark" href="{% url 'pool:conclude_personal_target' target.tid %}">
-          Conclude target
-        </a>
-        <a class="btn btn-sm btn-link" href="{% url 'pool:return_personal_target' target.tid %}">
-          Return target to the pool
-        </a>
+        <form action="{% url 'pool:conclude_personal_target' target.tid %}" method="POST" class="d-inline-block">
+          {% csrf_token %}
+          <button type="submit" id="tid" class="btn btn-sm btn-dark">Conclude target</button>
+        </form>
+        <form action="{% url 'pool:return_personal_target' target.tid %}" method="POST" class="d-inline-block">
+          {% csrf_token %}
+          <button type="submit" id="tid" class="btn btn-sm btn-link">Return target to the pool</button>
+        </form>
       </div>
     </div>
   {% endif %}

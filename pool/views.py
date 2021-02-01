@@ -5,6 +5,8 @@ from django.utils.timezone import now
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.exceptions import ValidationError
@@ -108,10 +110,16 @@ class RevealTargetView(LoginRequiredMixin, View):
         target = get_object_or_404(Target, target_id=tid, user=request.user)
 
         if target.is_precog:
-            available_targets = PoolTarget.objects.filter(level=target.level, active=True)
+            available_targets_ = PoolTarget.objects.filter(level=target.level, active=True)
             if not target.inc_submitted:
-                available_targets = available_targets.exclude(submission__submitted_by=request.user)
+                available_targets_ = available_targets_.exclude(submission__submitted_by=request.user)
+            done_targets = Target.objects.filter(pool_target__level=target.level,
+                                                user=self.request.user).values_list('pool_target', flat=True)
+            available_targets = available_targets_.exclude(pk__in=done_targets)
             count = available_targets.count()
+            if count == 0:
+                available_targets = available_targets_
+                count = available_targets.count()
             sel_target = available_targets[randint(0, count - 1)]
             target.pool_target = sel_target
 
@@ -253,21 +261,25 @@ class RevealPersonalTargetView(LoginRequiredMixin, View):
         target.save()
         return HttpResponseRedirect(reverse('pool:personal_target_detail', kwargs={'tid':tid}))
 
-@login_required
-def conclude_personal_target(request, tid):
-    target = get_object_or_404(PersonalTarget, tid=tid, user=request.user)
-    target.delete()
-    messages.success(request, 'The target was concluded and removed from the pool.')
-    return HttpResponseRedirect(reverse('pool:personal_targets'))
+class ConcludePersonalTargetView(LoginRequiredMixin, View):
 
-@login_required
-def return_personal_target(request, tid):
-    target = get_object_or_404(PersonalTarget, tid=tid, user=request.user)
-    target.active = False
-    target.revealed = False
-    target.save()
-    messages.success(request, 'The target was returned to the pool.')
-    return HttpResponseRedirect(reverse('pool:personal_targets'))
+    def post(self, request, *args, **kwargs):
+        tid = kwargs['tid']
+        target = get_object_or_404(PersonalTarget, tid=tid, user=request.user)
+        target.delete()
+        messages.success(request, 'The target was concluded and removed from the pool.')
+        return HttpResponseRedirect(reverse('pool:personal_targets'))
+
+class ReturnPersonalTargetView(LoginRequiredMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        tid = kwargs['tid']
+        target = get_object_or_404(PersonalTarget, tid=tid, user=request.user)
+        target.active = False
+        target.revealed = False
+        target.save()
+        messages.success(request, 'The target was returned to the pool.')
+        return HttpResponseRedirect(reverse('pool:personal_targets'))
 
 @register.filter
 def get_range(value):
@@ -276,3 +288,23 @@ def get_range(value):
 @register.filter
 def decryptTxt(value):
     return decrypt(value)
+
+'''
+** Settings
+'''
+
+class SettingsTemplateView(LoginRequiredMixin, TemplateView):
+    template_name = 'settings.html'
+
+class ChangePasswordView(LoginRequiredMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+            return HttpResponseRedirect(reverse('pool:user_settings'))
+        else:
+            messages.error(request, 'Please correct the error below.')
+            return render(request, template_name='settings.html', context={'form':form})

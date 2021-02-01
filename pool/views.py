@@ -278,7 +278,7 @@ class ReturnPersonalTargetView(LoginRequiredMixin, View):
         target.active = False
         target.revealed = False
         target.save()
-        messages.success(request, 'The target was returned to the pool. NEW')
+        messages.success(request, 'The target was returned to the pool.')
         return HttpResponseRedirect(reverse('pool:personal_targets'))
 
 @register.filter
